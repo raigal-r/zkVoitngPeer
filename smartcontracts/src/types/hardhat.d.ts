@@ -73,6 +73,22 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
+      name: "AccessControl",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.AccessControl__factory>;
+    getContractFactory(
+      name: "IAccessControl",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IAccessControl__factory>;
+    getContractFactory(
+      name: "GovernorCompatibilityBravo",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GovernorCompatibilityBravo__factory>;
+    getContractFactory(
+      name: "IGovernorCompatibilityBravo",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IGovernorCompatibilityBravo__factory>;
+    getContractFactory(
       name: "GovernorCountingSimple",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GovernorCountingSimple__factory>;
@@ -80,6 +96,10 @@ declare module "hardhat/types/runtime" {
       name: "GovernorSettings",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GovernorSettings__factory>;
+    getContractFactory(
+      name: "GovernorTimelockControl",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GovernorTimelockControl__factory>;
     getContractFactory(
       name: "GovernorVotes",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -89,6 +109,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GovernorVotesQuorumFraction__factory>;
     getContractFactory(
+      name: "IGovernorTimelock",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IGovernorTimelock__factory>;
+    getContractFactory(
       name: "Governor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Governor__factory>;
@@ -96,6 +120,10 @@ declare module "hardhat/types/runtime" {
       name: "IGovernor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IGovernor__factory>;
+    getContractFactory(
+      name: "TimelockController",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TimelockController__factory>;
     getContractFactory(
       name: "IVotes",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -168,6 +196,10 @@ declare module "hardhat/types/runtime" {
       name: "PeerGovernor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.PeerGovernor__factory>;
+    getContractFactory(
+      name: "PeerUSDC",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PeerUSDC__factory>;
     getContractFactory(
       name: "PeerVoteToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -253,6 +285,26 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20>;
     getContractAt(
+      name: "AccessControl",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.AccessControl>;
+    getContractAt(
+      name: "IAccessControl",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IAccessControl>;
+    getContractAt(
+      name: "GovernorCompatibilityBravo",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GovernorCompatibilityBravo>;
+    getContractAt(
+      name: "IGovernorCompatibilityBravo",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IGovernorCompatibilityBravo>;
+    getContractAt(
       name: "GovernorCountingSimple",
       address: string,
       signer?: ethers.Signer
@@ -262,6 +314,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.GovernorSettings>;
+    getContractAt(
+      name: "GovernorTimelockControl",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GovernorTimelockControl>;
     getContractAt(
       name: "GovernorVotes",
       address: string,
@@ -273,6 +330,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.GovernorVotesQuorumFraction>;
     getContractAt(
+      name: "IGovernorTimelock",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IGovernorTimelock>;
+    getContractAt(
       name: "Governor",
       address: string,
       signer?: ethers.Signer
@@ -282,6 +344,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IGovernor>;
+    getContractAt(
+      name: "TimelockController",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TimelockController>;
     getContractAt(
       name: "IVotes",
       address: string,
@@ -372,6 +439,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.PeerGovernor>;
+    getContractAt(
+      name: "PeerUSDC",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PeerUSDC>;
     getContractAt(
       name: "PeerVoteToken",
       address: string,

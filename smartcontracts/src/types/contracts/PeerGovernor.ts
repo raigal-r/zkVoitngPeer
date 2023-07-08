@@ -27,12 +27,27 @@ import type {
   OnEvent,
 } from "../common";
 
+export declare namespace IGovernorCompatibilityBravo {
+  export type ReceiptStruct = {
+    hasVoted: boolean;
+    support: BigNumberish;
+    votes: BigNumberish;
+  };
+
+  export type ReceiptStructOutput = [boolean, number, BigNumber] & {
+    hasVoted: boolean;
+    support: number;
+    votes: BigNumber;
+  };
+}
+
 export interface PeerGovernorInterface extends utils.Interface {
   functions: {
     "BALLOT_TYPEHASH()": FunctionFragment;
     "CLOCK_MODE()": FunctionFragment;
     "COUNTING_MODE()": FunctionFragment;
     "EXTENDED_BALLOT_TYPEHASH()": FunctionFragment;
+    "cancel(uint256)": FunctionFragment;
     "cancel(address[],uint256[],bytes[],bytes32)": FunctionFragment;
     "castVote(uint256,uint8)": FunctionFragment;
     "castVoteBySig(uint256,uint8,uint8,bytes32,bytes32)": FunctionFragment;
@@ -42,6 +57,9 @@ export interface PeerGovernorInterface extends utils.Interface {
     "clock()": FunctionFragment;
     "eip712Domain()": FunctionFragment;
     "execute(address[],uint256[],bytes[],bytes32)": FunctionFragment;
+    "execute(uint256)": FunctionFragment;
+    "getActions(uint256)": FunctionFragment;
+    "getReceipt(uint256,address)": FunctionFragment;
     "getVotes(address,uint256)": FunctionFragment;
     "getVotesWithParams(address,uint256,bytes)": FunctionFragment;
     "hasVoted(uint256,address)": FunctionFragment;
@@ -51,23 +69,27 @@ export interface PeerGovernorInterface extends utils.Interface {
     "onERC1155Received(address,address,uint256,uint256,bytes)": FunctionFragment;
     "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
     "proposalDeadline(uint256)": FunctionFragment;
+    "proposalEta(uint256)": FunctionFragment;
     "proposalProposer(uint256)": FunctionFragment;
     "proposalSnapshot(uint256)": FunctionFragment;
     "proposalThreshold()": FunctionFragment;
-    "proposalVotes(uint256)": FunctionFragment;
+    "proposals(uint256)": FunctionFragment;
     "propose(address[],uint256[],bytes[],string)": FunctionFragment;
+    "propose(address[],uint256[],string[],bytes[],string)": FunctionFragment;
+    "queue(address[],uint256[],bytes[],bytes32)": FunctionFragment;
+    "queue(uint256)": FunctionFragment;
     "quorum(uint256)": FunctionFragment;
     "quorumDenominator()": FunctionFragment;
     "quorumNumerator(uint256)": FunctionFragment;
     "quorumNumerator()": FunctionFragment;
+    "quorumVotes()": FunctionFragment;
     "relay(address,uint256,bytes)": FunctionFragment;
-    "setProposalThreshold(uint256)": FunctionFragment;
-    "setVotingDelay(uint256)": FunctionFragment;
-    "setVotingPeriod(uint256)": FunctionFragment;
     "state(uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
+    "timelock()": FunctionFragment;
     "token()": FunctionFragment;
     "updateQuorumNumerator(uint256)": FunctionFragment;
+    "updateTimelock(address)": FunctionFragment;
     "version()": FunctionFragment;
     "votingDelay()": FunctionFragment;
     "votingPeriod()": FunctionFragment;
@@ -79,7 +101,8 @@ export interface PeerGovernorInterface extends utils.Interface {
       | "CLOCK_MODE"
       | "COUNTING_MODE"
       | "EXTENDED_BALLOT_TYPEHASH"
-      | "cancel"
+      | "cancel(uint256)"
+      | "cancel(address[],uint256[],bytes[],bytes32)"
       | "castVote"
       | "castVoteBySig"
       | "castVoteWithReason"
@@ -87,7 +110,10 @@ export interface PeerGovernorInterface extends utils.Interface {
       | "castVoteWithReasonAndParamsBySig"
       | "clock"
       | "eip712Domain"
-      | "execute"
+      | "execute(address[],uint256[],bytes[],bytes32)"
+      | "execute(uint256)"
+      | "getActions"
+      | "getReceipt"
       | "getVotes"
       | "getVotesWithParams"
       | "hasVoted"
@@ -97,23 +123,27 @@ export interface PeerGovernorInterface extends utils.Interface {
       | "onERC1155Received"
       | "onERC721Received"
       | "proposalDeadline"
+      | "proposalEta"
       | "proposalProposer"
       | "proposalSnapshot"
       | "proposalThreshold"
-      | "proposalVotes"
-      | "propose"
+      | "proposals"
+      | "propose(address[],uint256[],bytes[],string)"
+      | "propose(address[],uint256[],string[],bytes[],string)"
+      | "queue(address[],uint256[],bytes[],bytes32)"
+      | "queue(uint256)"
       | "quorum"
       | "quorumDenominator"
       | "quorumNumerator(uint256)"
       | "quorumNumerator()"
+      | "quorumVotes"
       | "relay"
-      | "setProposalThreshold"
-      | "setVotingDelay"
-      | "setVotingPeriod"
       | "state"
       | "supportsInterface"
+      | "timelock"
       | "token"
       | "updateQuorumNumerator"
+      | "updateTimelock"
       | "version"
       | "votingDelay"
       | "votingPeriod"
@@ -136,7 +166,11 @@ export interface PeerGovernorInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "cancel",
+    functionFragment: "cancel(uint256)",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "cancel(address[],uint256[],bytes[],bytes32)",
     values: [string[], BigNumberish[], BytesLike[], BytesLike]
   ): string;
   encodeFunctionData(
@@ -173,8 +207,20 @@ export interface PeerGovernorInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "execute",
+    functionFragment: "execute(address[],uint256[],bytes[],bytes32)",
     values: [string[], BigNumberish[], BytesLike[], BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "execute(uint256)",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getActions",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getReceipt",
+    values: [BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "getVotes",
@@ -210,6 +256,10 @@ export interface PeerGovernorInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "proposalEta",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "proposalProposer",
     values: [BigNumberish]
   ): string;
@@ -222,12 +272,24 @@ export interface PeerGovernorInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "proposalVotes",
+    functionFragment: "proposals",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "propose",
+    functionFragment: "propose(address[],uint256[],bytes[],string)",
     values: [string[], BigNumberish[], BytesLike[], string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "propose(address[],uint256[],string[],bytes[],string)",
+    values: [string[], BigNumberish[], string[], BytesLike[], string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "queue(address[],uint256[],bytes[],bytes32)",
+    values: [string[], BigNumberish[], BytesLike[], BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "queue(uint256)",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "quorum",
@@ -246,30 +308,27 @@ export interface PeerGovernorInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "quorumVotes",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "relay",
     values: [string, BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setProposalThreshold",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setVotingDelay",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setVotingPeriod",
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "state", values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
+  encodeFunctionData(functionFragment: "timelock", values?: undefined): string;
   encodeFunctionData(functionFragment: "token", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "updateQuorumNumerator",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateTimelock",
+    values: [string]
   ): string;
   encodeFunctionData(functionFragment: "version", values?: undefined): string;
   encodeFunctionData(
@@ -294,7 +353,14 @@ export interface PeerGovernorInterface extends utils.Interface {
     functionFragment: "EXTENDED_BALLOT_TYPEHASH",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "cancel", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "cancel(uint256)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "cancel(address[],uint256[],bytes[],bytes32)",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "castVote", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "castVoteBySig",
@@ -317,7 +383,16 @@ export interface PeerGovernorInterface extends utils.Interface {
     functionFragment: "eip712Domain",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "execute(address[],uint256[],bytes[],bytes32)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "execute(uint256)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getActions", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getReceipt", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getVotes", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getVotesWithParams",
@@ -346,6 +421,10 @@ export interface PeerGovernorInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "proposalEta",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "proposalProposer",
     data: BytesLike
   ): Result;
@@ -357,11 +436,23 @@ export interface PeerGovernorInterface extends utils.Interface {
     functionFragment: "proposalThreshold",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "proposals", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "proposalVotes",
+    functionFragment: "propose(address[],uint256[],bytes[],string)",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "propose", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "propose(address[],uint256[],string[],bytes[],string)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "queue(address[],uint256[],bytes[],bytes32)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "queue(uint256)",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "quorum", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "quorumDenominator",
@@ -375,27 +466,24 @@ export interface PeerGovernorInterface extends utils.Interface {
     functionFragment: "quorumNumerator()",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "quorumVotes",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "relay", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setProposalThreshold",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setVotingDelay",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setVotingPeriod",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "state", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "timelock", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "updateQuorumNumerator",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTimelock",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
@@ -413,24 +501,22 @@ export interface PeerGovernorInterface extends utils.Interface {
     "ProposalCanceled(uint256)": EventFragment;
     "ProposalCreated(uint256,address,address[],uint256[],string[],bytes[],uint256,uint256,string)": EventFragment;
     "ProposalExecuted(uint256)": EventFragment;
-    "ProposalThresholdSet(uint256,uint256)": EventFragment;
+    "ProposalQueued(uint256,uint256)": EventFragment;
     "QuorumNumeratorUpdated(uint256,uint256)": EventFragment;
+    "TimelockChange(address,address)": EventFragment;
     "VoteCast(address,uint256,uint8,uint256,string)": EventFragment;
     "VoteCastWithParams(address,uint256,uint8,uint256,string,bytes)": EventFragment;
-    "VotingDelaySet(uint256,uint256)": EventFragment;
-    "VotingPeriodSet(uint256,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "EIP712DomainChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProposalCanceled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProposalCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProposalExecuted"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ProposalThresholdSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ProposalQueued"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "QuorumNumeratorUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TimelockChange"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoteCast"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoteCastWithParams"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "VotingDelaySet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "VotingPeriodSet"): EventFragment;
 }
 
 export interface EIP712DomainChangedEventObject {}
@@ -492,17 +578,16 @@ export type ProposalExecutedEvent = TypedEvent<
 export type ProposalExecutedEventFilter =
   TypedEventFilter<ProposalExecutedEvent>;
 
-export interface ProposalThresholdSetEventObject {
-  oldProposalThreshold: BigNumber;
-  newProposalThreshold: BigNumber;
+export interface ProposalQueuedEventObject {
+  proposalId: BigNumber;
+  eta: BigNumber;
 }
-export type ProposalThresholdSetEvent = TypedEvent<
+export type ProposalQueuedEvent = TypedEvent<
   [BigNumber, BigNumber],
-  ProposalThresholdSetEventObject
+  ProposalQueuedEventObject
 >;
 
-export type ProposalThresholdSetEventFilter =
-  TypedEventFilter<ProposalThresholdSetEvent>;
+export type ProposalQueuedEventFilter = TypedEventFilter<ProposalQueuedEvent>;
 
 export interface QuorumNumeratorUpdatedEventObject {
   oldQuorumNumerator: BigNumber;
@@ -515,6 +600,17 @@ export type QuorumNumeratorUpdatedEvent = TypedEvent<
 
 export type QuorumNumeratorUpdatedEventFilter =
   TypedEventFilter<QuorumNumeratorUpdatedEvent>;
+
+export interface TimelockChangeEventObject {
+  oldTimelock: string;
+  newTimelock: string;
+}
+export type TimelockChangeEvent = TypedEvent<
+  [string, string],
+  TimelockChangeEventObject
+>;
+
+export type TimelockChangeEventFilter = TypedEventFilter<TimelockChangeEvent>;
 
 export interface VoteCastEventObject {
   voter: string;
@@ -545,28 +641,6 @@ export type VoteCastWithParamsEvent = TypedEvent<
 
 export type VoteCastWithParamsEventFilter =
   TypedEventFilter<VoteCastWithParamsEvent>;
-
-export interface VotingDelaySetEventObject {
-  oldVotingDelay: BigNumber;
-  newVotingDelay: BigNumber;
-}
-export type VotingDelaySetEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  VotingDelaySetEventObject
->;
-
-export type VotingDelaySetEventFilter = TypedEventFilter<VotingDelaySetEvent>;
-
-export interface VotingPeriodSetEventObject {
-  oldVotingPeriod: BigNumber;
-  newVotingPeriod: BigNumber;
-}
-export type VotingPeriodSetEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  VotingPeriodSetEventObject
->;
-
-export type VotingPeriodSetEventFilter = TypedEventFilter<VotingPeriodSetEvent>;
 
 export interface PeerGovernor extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -603,7 +677,12 @@ export interface PeerGovernor extends BaseContract {
 
     EXTENDED_BALLOT_TYPEHASH(overrides?: CallOverrides): Promise<[string]>;
 
-    cancel(
+    "cancel(uint256)"(
+      proposalId: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    "cancel(address[],uint256[],bytes[],bytes32)"(
       targets: string[],
       values: BigNumberish[],
       calldatas: BytesLike[],
@@ -668,13 +747,36 @@ export interface PeerGovernor extends BaseContract {
       }
     >;
 
-    execute(
+    "execute(address[],uint256[],bytes[],bytes32)"(
       targets: string[],
       values: BigNumberish[],
       calldatas: BytesLike[],
       descriptionHash: BytesLike,
       overrides?: PayableOverrides & { from?: string }
     ): Promise<ContractTransaction>;
+
+    "execute(uint256)"(
+      proposalId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    getActions(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string[], BigNumber[], string[], string[]] & {
+        targets: string[];
+        values: BigNumber[];
+        signatures: string[];
+        calldatas: string[];
+      }
+    >;
+
+    getReceipt(
+      proposalId: BigNumberish,
+      voter: string,
+      overrides?: CallOverrides
+    ): Promise<[IGovernorCompatibilityBravo.ReceiptStructOutput]>;
 
     getVotes(
       account: string,
@@ -736,6 +838,11 @@ export interface PeerGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    proposalEta(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     proposalProposer(
       proposalId: BigNumberish,
       overrides?: CallOverrides
@@ -748,22 +855,62 @@ export interface PeerGovernor extends BaseContract {
 
     proposalThreshold(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    proposalVotes(
+    proposals(
       proposalId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, BigNumber, BigNumber] & {
-        againstVotes: BigNumber;
+      [
+        BigNumber,
+        string,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        boolean,
+        boolean
+      ] & {
+        id: BigNumber;
+        proposer: string;
+        eta: BigNumber;
+        startBlock: BigNumber;
+        endBlock: BigNumber;
         forVotes: BigNumber;
+        againstVotes: BigNumber;
         abstainVotes: BigNumber;
+        canceled: boolean;
+        executed: boolean;
       }
     >;
 
-    propose(
+    "propose(address[],uint256[],bytes[],string)"(
       targets: string[],
       values: BigNumberish[],
       calldatas: BytesLike[],
       description: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    "propose(address[],uint256[],string[],bytes[],string)"(
+      targets: string[],
+      values: BigNumberish[],
+      signatures: string[],
+      calldatas: BytesLike[],
+      description: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    "queue(address[],uint256[],bytes[],bytes32)"(
+      targets: string[],
+      values: BigNumberish[],
+      calldatas: BytesLike[],
+      descriptionHash: BytesLike,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    "queue(uint256)"(
+      proposalId: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -781,26 +928,13 @@ export interface PeerGovernor extends BaseContract {
 
     "quorumNumerator()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    quorumVotes(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     relay(
       target: string,
       value: BigNumberish,
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
-    setProposalThreshold(
-      newProposalThreshold: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
-    setVotingDelay(
-      newVotingDelay: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
-    setVotingPeriod(
-      newVotingPeriod: BigNumberish,
-      overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
     state(
@@ -813,10 +947,17 @@ export interface PeerGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    timelock(overrides?: CallOverrides): Promise<[string]>;
+
     token(overrides?: CallOverrides): Promise<[string]>;
 
     updateQuorumNumerator(
       newQuorumNumerator: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    updateTimelock(
+      newTimelock: string,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -835,7 +976,12 @@ export interface PeerGovernor extends BaseContract {
 
   EXTENDED_BALLOT_TYPEHASH(overrides?: CallOverrides): Promise<string>;
 
-  cancel(
+  "cancel(uint256)"(
+    proposalId: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  "cancel(address[],uint256[],bytes[],bytes32)"(
     targets: string[],
     values: BigNumberish[],
     calldatas: BytesLike[],
@@ -900,13 +1046,36 @@ export interface PeerGovernor extends BaseContract {
     }
   >;
 
-  execute(
+  "execute(address[],uint256[],bytes[],bytes32)"(
     targets: string[],
     values: BigNumberish[],
     calldatas: BytesLike[],
     descriptionHash: BytesLike,
     overrides?: PayableOverrides & { from?: string }
   ): Promise<ContractTransaction>;
+
+  "execute(uint256)"(
+    proposalId: BigNumberish,
+    overrides?: PayableOverrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  getActions(
+    proposalId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [string[], BigNumber[], string[], string[]] & {
+      targets: string[];
+      values: BigNumber[];
+      signatures: string[];
+      calldatas: string[];
+    }
+  >;
+
+  getReceipt(
+    proposalId: BigNumberish,
+    voter: string,
+    overrides?: CallOverrides
+  ): Promise<IGovernorCompatibilityBravo.ReceiptStructOutput>;
 
   getVotes(
     account: string,
@@ -968,6 +1137,11 @@ export interface PeerGovernor extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  proposalEta(
+    proposalId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   proposalProposer(
     proposalId: BigNumberish,
     overrides?: CallOverrides
@@ -980,22 +1154,62 @@ export interface PeerGovernor extends BaseContract {
 
   proposalThreshold(overrides?: CallOverrides): Promise<BigNumber>;
 
-  proposalVotes(
+  proposals(
     proposalId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, BigNumber, BigNumber] & {
-      againstVotes: BigNumber;
+    [
+      BigNumber,
+      string,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      boolean,
+      boolean
+    ] & {
+      id: BigNumber;
+      proposer: string;
+      eta: BigNumber;
+      startBlock: BigNumber;
+      endBlock: BigNumber;
       forVotes: BigNumber;
+      againstVotes: BigNumber;
       abstainVotes: BigNumber;
+      canceled: boolean;
+      executed: boolean;
     }
   >;
 
-  propose(
+  "propose(address[],uint256[],bytes[],string)"(
     targets: string[],
     values: BigNumberish[],
     calldatas: BytesLike[],
     description: string,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  "propose(address[],uint256[],string[],bytes[],string)"(
+    targets: string[],
+    values: BigNumberish[],
+    signatures: string[],
+    calldatas: BytesLike[],
+    description: string,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  "queue(address[],uint256[],bytes[],bytes32)"(
+    targets: string[],
+    values: BigNumberish[],
+    calldatas: BytesLike[],
+    descriptionHash: BytesLike,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  "queue(uint256)"(
+    proposalId: BigNumberish,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -1013,26 +1227,13 @@ export interface PeerGovernor extends BaseContract {
 
   "quorumNumerator()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+  quorumVotes(overrides?: CallOverrides): Promise<BigNumber>;
+
   relay(
     target: string,
     value: BigNumberish,
     data: BytesLike,
     overrides?: PayableOverrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
-  setProposalThreshold(
-    newProposalThreshold: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
-  setVotingDelay(
-    newVotingDelay: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
-  setVotingPeriod(
-    newVotingPeriod: BigNumberish,
-    overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
   state(proposalId: BigNumberish, overrides?: CallOverrides): Promise<number>;
@@ -1042,10 +1243,17 @@ export interface PeerGovernor extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  timelock(overrides?: CallOverrides): Promise<string>;
+
   token(overrides?: CallOverrides): Promise<string>;
 
   updateQuorumNumerator(
     newQuorumNumerator: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  updateTimelock(
+    newTimelock: string,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -1064,7 +1272,12 @@ export interface PeerGovernor extends BaseContract {
 
     EXTENDED_BALLOT_TYPEHASH(overrides?: CallOverrides): Promise<string>;
 
-    cancel(
+    "cancel(uint256)"(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "cancel(address[],uint256[],bytes[],bytes32)"(
       targets: string[],
       values: BigNumberish[],
       calldatas: BytesLike[],
@@ -1129,13 +1342,36 @@ export interface PeerGovernor extends BaseContract {
       }
     >;
 
-    execute(
+    "execute(address[],uint256[],bytes[],bytes32)"(
       targets: string[],
       values: BigNumberish[],
       calldatas: BytesLike[],
       descriptionHash: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    "execute(uint256)"(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    getActions(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string[], BigNumber[], string[], string[]] & {
+        targets: string[];
+        values: BigNumber[];
+        signatures: string[];
+        calldatas: string[];
+      }
+    >;
+
+    getReceipt(
+      proposalId: BigNumberish,
+      voter: string,
+      overrides?: CallOverrides
+    ): Promise<IGovernorCompatibilityBravo.ReceiptStructOutput>;
 
     getVotes(
       account: string,
@@ -1197,6 +1433,11 @@ export interface PeerGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    proposalEta(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     proposalProposer(
       proposalId: BigNumberish,
       overrides?: CallOverrides
@@ -1209,24 +1450,64 @@ export interface PeerGovernor extends BaseContract {
 
     proposalThreshold(overrides?: CallOverrides): Promise<BigNumber>;
 
-    proposalVotes(
+    proposals(
       proposalId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, BigNumber, BigNumber] & {
-        againstVotes: BigNumber;
+      [
+        BigNumber,
+        string,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        boolean,
+        boolean
+      ] & {
+        id: BigNumber;
+        proposer: string;
+        eta: BigNumber;
+        startBlock: BigNumber;
+        endBlock: BigNumber;
         forVotes: BigNumber;
+        againstVotes: BigNumber;
         abstainVotes: BigNumber;
+        canceled: boolean;
+        executed: boolean;
       }
     >;
 
-    propose(
+    "propose(address[],uint256[],bytes[],string)"(
       targets: string[],
       values: BigNumberish[],
       calldatas: BytesLike[],
       description: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    "propose(address[],uint256[],string[],bytes[],string)"(
+      targets: string[],
+      values: BigNumberish[],
+      signatures: string[],
+      calldatas: BytesLike[],
+      description: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "queue(address[],uint256[],bytes[],bytes32)"(
+      targets: string[],
+      values: BigNumberish[],
+      calldatas: BytesLike[],
+      descriptionHash: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "queue(uint256)"(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     quorum(
       blockNumber: BigNumberish,
@@ -1242,25 +1523,12 @@ export interface PeerGovernor extends BaseContract {
 
     "quorumNumerator()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    quorumVotes(overrides?: CallOverrides): Promise<BigNumber>;
+
     relay(
       target: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setProposalThreshold(
-      newProposalThreshold: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setVotingDelay(
-      newVotingDelay: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setVotingPeriod(
-      newVotingPeriod: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1271,10 +1539,17 @@ export interface PeerGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    timelock(overrides?: CallOverrides): Promise<string>;
+
     token(overrides?: CallOverrides): Promise<string>;
 
     updateQuorumNumerator(
       newQuorumNumerator: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateTimelock(
+      newTimelock: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1318,14 +1593,11 @@ export interface PeerGovernor extends BaseContract {
     "ProposalExecuted(uint256)"(proposalId?: null): ProposalExecutedEventFilter;
     ProposalExecuted(proposalId?: null): ProposalExecutedEventFilter;
 
-    "ProposalThresholdSet(uint256,uint256)"(
-      oldProposalThreshold?: null,
-      newProposalThreshold?: null
-    ): ProposalThresholdSetEventFilter;
-    ProposalThresholdSet(
-      oldProposalThreshold?: null,
-      newProposalThreshold?: null
-    ): ProposalThresholdSetEventFilter;
+    "ProposalQueued(uint256,uint256)"(
+      proposalId?: null,
+      eta?: null
+    ): ProposalQueuedEventFilter;
+    ProposalQueued(proposalId?: null, eta?: null): ProposalQueuedEventFilter;
 
     "QuorumNumeratorUpdated(uint256,uint256)"(
       oldQuorumNumerator?: null,
@@ -1335,6 +1607,15 @@ export interface PeerGovernor extends BaseContract {
       oldQuorumNumerator?: null,
       newQuorumNumerator?: null
     ): QuorumNumeratorUpdatedEventFilter;
+
+    "TimelockChange(address,address)"(
+      oldTimelock?: null,
+      newTimelock?: null
+    ): TimelockChangeEventFilter;
+    TimelockChange(
+      oldTimelock?: null,
+      newTimelock?: null
+    ): TimelockChangeEventFilter;
 
     "VoteCast(address,uint256,uint8,uint256,string)"(
       voter?: string | null,
@@ -1367,24 +1648,6 @@ export interface PeerGovernor extends BaseContract {
       reason?: null,
       params?: null
     ): VoteCastWithParamsEventFilter;
-
-    "VotingDelaySet(uint256,uint256)"(
-      oldVotingDelay?: null,
-      newVotingDelay?: null
-    ): VotingDelaySetEventFilter;
-    VotingDelaySet(
-      oldVotingDelay?: null,
-      newVotingDelay?: null
-    ): VotingDelaySetEventFilter;
-
-    "VotingPeriodSet(uint256,uint256)"(
-      oldVotingPeriod?: null,
-      newVotingPeriod?: null
-    ): VotingPeriodSetEventFilter;
-    VotingPeriodSet(
-      oldVotingPeriod?: null,
-      newVotingPeriod?: null
-    ): VotingPeriodSetEventFilter;
   };
 
   estimateGas: {
@@ -1396,7 +1659,12 @@ export interface PeerGovernor extends BaseContract {
 
     EXTENDED_BALLOT_TYPEHASH(overrides?: CallOverrides): Promise<BigNumber>;
 
-    cancel(
+    "cancel(uint256)"(
+      proposalId: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    "cancel(address[],uint256[],bytes[],bytes32)"(
       targets: string[],
       values: BigNumberish[],
       calldatas: BytesLike[],
@@ -1449,12 +1717,28 @@ export interface PeerGovernor extends BaseContract {
 
     eip712Domain(overrides?: CallOverrides): Promise<BigNumber>;
 
-    execute(
+    "execute(address[],uint256[],bytes[],bytes32)"(
       targets: string[],
       values: BigNumberish[],
       calldatas: BytesLike[],
       descriptionHash: BytesLike,
       overrides?: PayableOverrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    "execute(uint256)"(
+      proposalId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    getActions(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getReceipt(
+      proposalId: BigNumberish,
+      voter: string,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getVotes(
@@ -1517,6 +1801,11 @@ export interface PeerGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    proposalEta(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     proposalProposer(
       proposalId: BigNumberish,
       overrides?: CallOverrides
@@ -1529,16 +1818,38 @@ export interface PeerGovernor extends BaseContract {
 
     proposalThreshold(overrides?: CallOverrides): Promise<BigNumber>;
 
-    proposalVotes(
+    proposals(
       proposalId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    propose(
+    "propose(address[],uint256[],bytes[],string)"(
       targets: string[],
       values: BigNumberish[],
       calldatas: BytesLike[],
       description: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    "propose(address[],uint256[],string[],bytes[],string)"(
+      targets: string[],
+      values: BigNumberish[],
+      signatures: string[],
+      calldatas: BytesLike[],
+      description: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    "queue(address[],uint256[],bytes[],bytes32)"(
+      targets: string[],
+      values: BigNumberish[],
+      calldatas: BytesLike[],
+      descriptionHash: BytesLike,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    "queue(uint256)"(
+      proposalId: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
@@ -1556,26 +1867,13 @@ export interface PeerGovernor extends BaseContract {
 
     "quorumNumerator()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    quorumVotes(overrides?: CallOverrides): Promise<BigNumber>;
+
     relay(
       target: string,
       value: BigNumberish,
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string }
-    ): Promise<BigNumber>;
-
-    setProposalThreshold(
-      newProposalThreshold: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
-
-    setVotingDelay(
-      newVotingDelay: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
-
-    setVotingPeriod(
-      newVotingPeriod: BigNumberish,
-      overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
     state(
@@ -1588,10 +1886,17 @@ export interface PeerGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    timelock(overrides?: CallOverrides): Promise<BigNumber>;
+
     token(overrides?: CallOverrides): Promise<BigNumber>;
 
     updateQuorumNumerator(
       newQuorumNumerator: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    updateTimelock(
+      newTimelock: string,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
@@ -1613,7 +1918,12 @@ export interface PeerGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    cancel(
+    "cancel(uint256)"(
+      proposalId: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    "cancel(address[],uint256[],bytes[],bytes32)"(
       targets: string[],
       values: BigNumberish[],
       calldatas: BytesLike[],
@@ -1666,12 +1976,28 @@ export interface PeerGovernor extends BaseContract {
 
     eip712Domain(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    execute(
+    "execute(address[],uint256[],bytes[],bytes32)"(
       targets: string[],
       values: BigNumberish[],
       calldatas: BytesLike[],
       descriptionHash: BytesLike,
       overrides?: PayableOverrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    "execute(uint256)"(
+      proposalId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    getActions(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getReceipt(
+      proposalId: BigNumberish,
+      voter: string,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getVotes(
@@ -1734,6 +2060,11 @@ export interface PeerGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    proposalEta(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     proposalProposer(
       proposalId: BigNumberish,
       overrides?: CallOverrides
@@ -1746,16 +2077,38 @@ export interface PeerGovernor extends BaseContract {
 
     proposalThreshold(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    proposalVotes(
+    proposals(
       proposalId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    propose(
+    "propose(address[],uint256[],bytes[],string)"(
       targets: string[],
       values: BigNumberish[],
       calldatas: BytesLike[],
       description: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    "propose(address[],uint256[],string[],bytes[],string)"(
+      targets: string[],
+      values: BigNumberish[],
+      signatures: string[],
+      calldatas: BytesLike[],
+      description: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    "queue(address[],uint256[],bytes[],bytes32)"(
+      targets: string[],
+      values: BigNumberish[],
+      calldatas: BytesLike[],
+      descriptionHash: BytesLike,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    "queue(uint256)"(
+      proposalId: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
@@ -1775,26 +2128,13 @@ export interface PeerGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    quorumVotes(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     relay(
       target: string,
       value: BigNumberish,
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
-    setProposalThreshold(
-      newProposalThreshold: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
-    setVotingDelay(
-      newVotingDelay: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
-    setVotingPeriod(
-      newVotingPeriod: BigNumberish,
-      overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
     state(
@@ -1807,10 +2147,17 @@ export interface PeerGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    timelock(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     updateQuorumNumerator(
       newQuorumNumerator: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    updateTimelock(
+      newTimelock: string,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 

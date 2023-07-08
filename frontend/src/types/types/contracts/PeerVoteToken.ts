@@ -57,7 +57,7 @@ export interface PeerVoteTokenInterface extends utils.Interface {
     "getPastVotes(address,uint256)": FunctionFragment;
     "getVotes(address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "mint(uint256)": FunctionFragment;
+    "mint(uint256,address)": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
     "numCheckpoints(address)": FunctionFragment;
@@ -155,7 +155,10 @@ export interface PeerVoteTokenInterface extends utils.Interface {
     functionFragment: "increaseAllowance",
     values: [string, BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "mint", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "mint",
+    values: [BigNumberish, string]
+  ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "nonces", values: [string]): string;
   encodeFunctionData(
@@ -434,6 +437,7 @@ export interface PeerVoteToken extends BaseContract {
 
     mint(
       amount: BigNumberish,
+      receiver: string,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -561,6 +565,7 @@ export interface PeerVoteToken extends BaseContract {
 
   mint(
     amount: BigNumberish,
+    receiver: string,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -680,7 +685,11 @@ export interface PeerVoteToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    mint(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    mint(
+      amount: BigNumberish,
+      receiver: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -841,6 +850,7 @@ export interface PeerVoteToken extends BaseContract {
 
     mint(
       amount: BigNumberish,
+      receiver: string,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
@@ -966,6 +976,7 @@ export interface PeerVoteToken extends BaseContract {
 
     mint(
       amount: BigNumberish,
+      receiver: string,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
