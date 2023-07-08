@@ -7,9 +7,12 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "codegen": "graphql-codegen --config src/features/graph-client/graphql/codegen.ts"
+    "codegen": "graphql-codegen --config src/features/graph-client/graphql/codegen.ts",
+    "graph": "graphclient build --fileType js",
+    "graph:serve": "graphclient serve-dev"
   },
   "dependencies": {
+    "@graphql-mesh/utils": "^0.94.3",
     "@heroicons/react": "^2.0.18",
     "@rainbow-me/rainbowkit": "^1.0.5",
     "@t3-oss/env-nextjs": "^0.3.1",
@@ -21,6 +24,8 @@
     "@trpc/server": "^10.34.0",
     "clsx": "^1.2.1",
     "daisyui": "^2.52.0",
+    "ethers": "5.7.2",
+    "graphql": "^16.7.1",
     "immer": "^10.0.2",
     "next": "13.4.1",
     "react": "18.2.0",
@@ -33,6 +38,7 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
+    "@graphprotocol/client-cli": "^3.0.0",
     "@types/node": "^20.4.1",
     "@types/prettier": "^2.7.3",
     "@types/react": "^18.2.14",

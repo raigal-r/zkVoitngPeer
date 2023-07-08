@@ -1,4 +1,4 @@
-import { Wallet, utils, Provider, EIP712Signer, types } from "zksync-web3";
+import { Wallet, Provider } from "zksync-web3";
 import * as ethers from "ethers";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
@@ -24,7 +24,9 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   ) as Governor;
 
   const proposalTx = await governor.castVote(
-    ethers.BigNumber.from("79962949918601016327557759576923146270178233114978289851025418173003015207999"),
+    ethers.BigNumber.from(
+      "79962949918601016327557759576923146270178233114978289851025418173003015207999"
+    ),
     1
   );
 

@@ -8,6 +8,7 @@ import { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 import { zkSyncTestnet } from "viem/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const { chains, publicClient } = configureChains(
   [zkSync, zkSyncTestnet],
@@ -35,6 +36,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           <Component {...pageProps} />
         </RainbowKitProvider>
       </WagmiConfig>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 };

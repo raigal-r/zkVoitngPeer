@@ -1,9 +1,5 @@
 node_modules
 artifacts-zk
 cache-zk
-<<<<<<< HEAD
 yarn
-
-=======
 yarn.lock
->>>>>>> 3a919e186359bb0e03e45b8f4bb922e66c5b67c3

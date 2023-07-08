@@ -11,17 +11,39 @@ const Landing: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Layout>
-                <div className="container flex flex-col w-full items-center justify-center gap-12 px-4 py-16 ">
-                    <form className="w-full">
-                        <label className="label w-1/2">
-                            <span className="label-text w-1/2">Titel</span>
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="Titel"
-                            className="input input-bordered">
-                        </input>
-                    </form>
+                <div className="container w-full flex flex-col px-4 py-16">
+                    <div className="w-full">
+                        <h2 className="pb-6">Please fill out the form below to create a new Proposal for your DAO:</h2>
+                        <form className="flex flex-col w-full gap-y-3">
+                            <div className="flex flex-col w-full">
+                                <label className="w-full">
+                                    Titel
+                                </label>
+                                <input className="input input-bordered w-full" type="text" placeholder="Titel of the voring proposal" />
+
+                            </div>
+                            <div className="flex flex-col w-full">
+                                <label>
+                                    Description
+                                </label>
+                                <textarea className="textarea textarea-bordered w-full" placeholder="Description of the voting proposal" />
+                            </div>
+                            <div className="flex flex-col w-full">
+                                <label>
+                                    Voting options
+                                </label>
+                                <select className="select select-bordered w-full">
+                                    <option disabled>Fundraising</option>
+                                    <option selected>Transfer Funds</option>
+                                </select>
+                            </div>
+                            <div className="flex justify-between w-full">
+                                <button className="btn btn-accent">Create</button>
+                                <button className="btn btn-secondary">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+
                 </div>
 
             </Layout>

@@ -1,0 +1,51 @@
+specVersion: 0.0.5
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: PeerGovernor
+    network: zkSync2-testnet
+    source:
+      address: "0x8340931FAfD164bFe8f802329b50Bd8644BeB52b"
+      abi: PeerGovernor
+      startBlock: 9165430
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - EIP712DomainChanged
+        - ProposalCanceled
+        - ProposalCreated
+        - ProposalExecuted
+        - ProposalThresholdSet
+        - QuorumNumeratorUpdated
+        - VoteCast
+        - VoteCastWithParams
+        - VotingDelaySet
+        - VotingPeriodSet
+      abis:
+        - name: PeerGovernor
+          file: PeerGovernor/abis/PeerGovernor.json
+      eventHandlers:
+        - event: EIP712DomainChanged()
+          handler: handleEIP712DomainChanged
+        - event: ProposalCanceled(uint256)
+          handler: handleProposalCanceled
+        - event: ProposalCreated(uint256,address,address[],uint256[],string[],bytes[],uint256,uint256,string)
+          handler: handleProposalCreated
+        - event: ProposalExecuted(uint256)
+          handler: handleProposalExecuted
+        - event: ProposalThresholdSet(uint256,uint256)
+          handler: handleProposalThresholdSet
+        - event: QuorumNumeratorUpdated(uint256,uint256)
+          handler: handleQuorumNumeratorUpdated
+        - event: VoteCast(indexed address,uint256,uint8,uint256,string)
+          handler: handleVoteCast
+        - event: VoteCastWithParams(indexed address,uint256,uint8,uint256,string,bytes)
+          handler: handleVoteCastWithParams
+        - event: VotingDelaySet(uint256,uint256)
+          handler: handleVotingDelaySet
+        - event: VotingPeriodSet(uint256,uint256)
+          handler: handleVotingPeriodSet
+      file: PeerGovernor/PeerGovernor.wasm

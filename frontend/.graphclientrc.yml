@@ -1,0 +1,9 @@
+# .graphclientrc.yml
+sources:
+  - name: zkvoiting-peerup
+    handler:
+      graphql:
+        endpoint: https://api.thegraph.com/subgraphs/name/grmkris/zkvoiting-peerup
+
+documents:
+  - 'src/.graphclient/queries/**/*.graphql'
