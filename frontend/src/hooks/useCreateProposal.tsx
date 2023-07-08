@@ -1,11 +1,13 @@
-import { Provider, utils, Wallet, Signer, L1Signer } from "zksync-web3";
+import { utils } from "zksync-web3";
 import { useEthersSigner } from "../useEthersSigner";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ERC20__factory, Governor__factory } from "../types";
 import { Address } from "viem";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
 import { useZkSyncAccount } from "./useZkSyncAccount";
 import { toast } from "react-toastify";
+import { getBuiltGraphSDK } from "../../.graphclient";
+import { useQueryClient } from "wagmi";
 
 const PROPOSAL_DATA = {
   values: [0],
@@ -17,9 +19,11 @@ export const PAYMASTER_ADDRESS = "0xfcd8BCbac5c048878f83Cd5590c32b684515761F";
 
 export const useCreateProposal = () => {
   const signer = useEthersSigner();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: ["createProposal"],
+    onSettled: () => queryClient.invalidateQueries(),
     mutationFn: async (variables: {
       description: string;
       recipient: Address;
@@ -66,6 +70,7 @@ export const useGetProposalState = (props: { proposalId: string }) => {
   const signer = useEthersSigner();
   return useQuery({
     queryKey: ["proposalState", props.proposalId],
+    enabled: !!props.proposalId,
     queryFn: async () => {
       const governor = Governor__factory.connect(GOVERNOR_ADDRESS, signer);
       const state = await governor.state(props.proposalId);
@@ -78,7 +83,9 @@ export const useGetProposalState = (props: { proposalId: string }) => {
 // 1 = yes ?
 export const useCastVote = () => {
   const signer = useEthersSigner();
+  const queryClient = useQueryClient();
   return useMutation({
+    onSettled: () => queryClient.invalidateQueries(),
     mutationFn: async (props: { proposalId: string; vote: number }) => {
       const governor = Governor__factory.connect(GOVERNOR_ADDRESS, signer);
       const tx = await governor.castVote(props.proposalId, props.vote);
@@ -88,9 +95,11 @@ export const useCastVote = () => {
   });
 };
 
-export const useCastVotePaymaster = () => {
+export const useCastVotePaymasterWallet = () => {
   const signer = useEthersSigner();
+  const queryClient = useQueryClient();
   return useMutation({
+    onSettled: () => queryClient.invalidateQueries(),
     mutationFn: async (props: { proposalId: string; vote: number }) => {
       const paymasterParams = utils.getPaymasterParams(PAYMASTER_ADDRESS, {
         type: "General",
@@ -121,8 +130,10 @@ export const useCastVotePaymaster = () => {
 
 export const useCreateProposalPaymaster = () => {
   const signer = useEthersSigner();
+  const queryClient = useQueryClient();
 
   return useMutation({
+    onSettled: () => queryClient.invalidateQueries(),
     mutationKey: ["createProposal"],
     mutationFn: async (variables: {
       description: string;
@@ -164,9 +175,11 @@ export const useCreateProposalPaymaster = () => {
   });
 };
 
-export const useCastVotePaymaster2 = () => {
+export const useCastVotePaymaster = () => {
   const { data: signer } = useZkSyncAccount();
+  const queryClient = useQueryClient();
   return useMutation({
+    onSettled: () => queryClient.invalidateQueries(),
     mutationFn: async (props: { proposalId: string; vote: number }) => {
       toast.info("Waiting for zkSync transaction to be mined");
       const paymasterParams = utils.getPaymasterParams(PAYMASTER_ADDRESS, {
@@ -204,6 +217,42 @@ export const useCastVotePaymaster2 = () => {
           Transaction hash: {proposalReceipt.transactionHash}
         </a>
       );
+    },
+  });
+};
+
+export const useGetVotes = (props: { proposalId: string }) => {
+  return useQuery({
+    queryKey: ["getVotes", props.proposalId],
+    enabled: !!props.proposalId,
+    queryFn: async () => {
+      const client = await getBuiltGraphSDK();
+      const votes = await client.votesByProposal({
+        proposalId: props.proposalId,
+      });
+      let yes = 0;
+      let no = 0;
+      votes.voteCasts.forEach((vote) => {
+        if (vote.support === 1) {
+          yes += 1;
+        } else {
+          no += 1;
+        }
+      });
+      return { yes, no, votes: votes.voteCasts };
+    },
+  });
+};
+
+export const useGetProposal = (props: { proposalId: string }) => {
+  return useQuery({
+    queryKey: ["getProposal", props.proposalId],
+    enabled: !!props.proposalId,
+    queryFn: async () => {
+      const client = await getBuiltGraphSDK();
+      return await client.proposalById({
+        proposalId: props.proposalId,
+      });
     },
   });
 };

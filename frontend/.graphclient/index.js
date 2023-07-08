@@ -93,6 +93,18 @@ export async function getMeshOptions() {
                         return printWithCache(VotesDocument);
                     },
                     location: 'VotesDocument.graphql'
+                }, {
+                    document: VotesByProposalDocument,
+                    get rawSDL() {
+                        return printWithCache(VotesByProposalDocument);
+                    },
+                    location: 'VotesByProposalDocument.graphql'
+                }, {
+                    document: ProposalByIdDocument,
+                    get rawSDL() {
+                        return printWithCache(ProposalByIdDocument);
+                    },
+                    location: 'ProposalByIdDocument.graphql'
                 }
             ];
         },
@@ -148,6 +160,36 @@ export const votesDocument = gql `
   }
 }
     `;
+export const votesByProposalDocument = gql `
+    query votesByProposal($proposalId: BigInt!) {
+  voteCasts(where: {proposalId: $proposalId}) {
+    proposalId
+    transactionHash
+    id
+    voter
+    reason
+    support
+    weight
+    id
+    transactionHash
+    blockNumber
+    blockTimestamp
+  }
+}
+    `;
+export const proposalByIdDocument = gql `
+    query proposalById($proposalId: BigInt!) {
+  proposalCreateds(where: {proposalId: $proposalId}) {
+    id
+    description
+    transactionHash
+    voteEnd
+    voteStart
+    proposer
+    proposalId
+  }
+}
+    `;
 export function getSdk(requester) {
     return {
         proposals(variables, options) {
@@ -155,6 +197,12 @@ export function getSdk(requester) {
         },
         votes(variables, options) {
             return requester(votesDocument, variables, options);
+        },
+        votesByProposal(variables, options) {
+            return requester(votesByProposalDocument, variables, options);
+        },
+        proposalById(variables, options) {
+            return requester(proposalByIdDocument, variables, options);
         }
     };
 }
