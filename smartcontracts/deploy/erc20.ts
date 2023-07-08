@@ -1,7 +1,6 @@
-import { Wallet, Provider, EIP712Signer, types } from "zksync-web3";
+import { Wallet, Provider } from "zksync-web3";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
-import { ethers } from "ethers";
 
 export default async function (hre: HardhatRuntimeEnvironment) {
   const provider = new Provider("https://testnet.era.zksync.dev");

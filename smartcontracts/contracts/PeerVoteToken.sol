@@ -21,4 +21,8 @@ contract PeerVoteToken is ERC20, ERC20Permit, ERC20Votes {
     function _burn(address account, uint256 amount) internal override(ERC20, ERC20Votes) {
         super._burn(account, amount);
     }
+
+    function mint(uint256 amount) public {
+        _mint(msg.sender, amount);
+    }
 }

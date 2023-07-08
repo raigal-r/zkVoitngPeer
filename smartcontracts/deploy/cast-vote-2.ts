@@ -7,8 +7,9 @@ import { Governor } from "../src/types";
 export default async function (hre: HardhatRuntimeEnvironment) {
   const provider = new Provider("https://testnet.era.zksync.dev");
 
+  const result = ethers.Wallet.createRandom().connect(provider);
   const wallet1 = new Wallet(
-    "0xcc1149669c0f288ae228c316d93a8fd39b766a7d5ac3f41054f74e4ee7f1a09c"
+    "0xca2a472d33cb2b40f4658bf7f2471a1082f99b1c4850152c884d1fe0ad7987a5"
   ).connect(provider);
   const deployer = new Deployer(hre, wallet1);
 
@@ -25,7 +26,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
 
   const proposalTx = await governor.castVote(
     ethers.BigNumber.from(
-      "79962949918601016327557759576923146270178233114978289851025418173003015207999"
+      "33687590986052694226245714979495645033388479289268406169597456432666066077801"
     ),
     1
   );
