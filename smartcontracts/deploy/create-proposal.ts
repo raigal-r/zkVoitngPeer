@@ -24,7 +24,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   );
 
   const teamAddress = wallet1.address;
-  const grantAmount = 420;
+  const grantAmount = 666;
   const transferCalldata = votingokenInterface.encodeFunctionData("transfer", [
     teamAddress,
     grantAmount,
