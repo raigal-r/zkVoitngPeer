@@ -24,21 +24,18 @@ export default async function (hre: HardhatRuntimeEnvironment) {
     wallet2
   ) as Governor;
 
-  const proposalTx = await governor.castVote(
+  const proposalState = await governor.state(
     ethers.BigNumber.from(
       //"108483488697189105207973731511407116515385942259030815579054678840735290608600"
       "33687590986052694226245714979495645033388479289268406169597456432666066077801"
-    ),
-    1
+    )
   );
-
-  const proposalReceipt = await proposalTx.wait();
-
-  // get emmited event
-  console.log(
-    proposalReceipt.events?.map((e) => ({
-      name: e.event,
-      args: e.args?.map((a) => a.toString()),
-    }))
-  );
+  
+  if (proposalState == 1){
+    const proposalStateString = "Active"
+    console.log(proposalStateString)
+  } else if (proposalState == 2){
+    const proposalStateString = "Not Active"
+    console.log(proposalStateString)
+  }
 }
