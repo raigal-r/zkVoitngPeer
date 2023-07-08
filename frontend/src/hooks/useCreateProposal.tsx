@@ -11,7 +11,6 @@ import { useQueryClient } from "wagmi";
 
 const PROPOSAL_DATA = {
   values: [0],
-  targets: ["0xB8f59AF10d8C66b92d0539C898854040147f8cFf"],
 };
 
 export const GOVERNOR_ADDRESS = "0x8340931FAfD164bFe8f802329b50Bd8644BeB52b";
@@ -28,6 +27,7 @@ export const useCreateProposal = () => {
       description: string;
       recipient: Address;
       amount: BigNumber;
+      erc20Address: Address;
     }) => {
       const governor = Governor__factory.connect(GOVERNOR_ADDRESS, signer);
       const transferCalldata =
@@ -36,10 +36,22 @@ export const useCreateProposal = () => {
           variables.amount,
         ]);
       const tx = await governor.propose(
-        PROPOSAL_DATA.targets,
+        [variables.erc20Address],
         PROPOSAL_DATA.values,
         [transferCalldata],
         variables.description
+      );
+      toast.info(
+        <div>
+          Transaction sent, waiting for confirmation...
+          <a
+            href={`https://zksync2-testnet.zkscan.io/tx/${tx.hash}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            View on explorer
+          </a>
+        </div>
       );
       const receipt = await tx.wait(2);
       const proposalId = receipt.events?.find(
@@ -124,53 +136,6 @@ export const useCastVotePaymasterWallet = () => {
           args: e.args?.map((a) => a.toString()),
         }))
       );
-    },
-  });
-};
-
-export const useCreateProposalPaymaster = () => {
-  const signer = useEthersSigner();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    onSettled: () => queryClient.invalidateQueries(),
-    mutationKey: ["createProposal"],
-    mutationFn: async (variables: {
-      description: string;
-      recipient: Address;
-      amount: BigNumber;
-    }) => {
-      const paymasterParams = utils.getPaymasterParams(PAYMASTER_ADDRESS, {
-        type: "General",
-        innerInput: new Uint8Array(),
-      });
-      const governor = Governor__factory.connect(GOVERNOR_ADDRESS, signer);
-      const transferCalldata =
-        ERC20__factory.createInterface().encodeFunctionData("transfer", [
-          variables.recipient,
-          variables.amount,
-        ]);
-      const tx = await governor.propose(
-        PROPOSAL_DATA.targets,
-        PROPOSAL_DATA.values,
-        [transferCalldata],
-        variables.description,
-        // paymaster info
-        {
-          customData: {
-            paymasterParams: paymasterParams,
-            gasPerPubdata: utils.DEFAULT_GAS_PER_PUBDATA_LIMIT,
-          },
-        }
-      );
-      const receipt = await tx.wait(2);
-      const proposalId = receipt.events?.find(
-        (event) => event.event === "ProposalCreated"
-      )?.args?.id;
-      if (!proposalId) {
-        throw new Error("No proposal id found");
-      }
-      return proposalId;
     },
   });
 };
