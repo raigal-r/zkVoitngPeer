@@ -15,13 +15,10 @@ export default async function (hre: HardhatRuntimeEnvironment) {
     "PeerVoteToken"
   );
 
-  const GovernorReadArtifact = await deployer.loadArtifact("PeerGovernor");
+  const GovernorReadArtifact = await deployer.loadArtifact("PeerGovernorV2");
   console.log("deploying governor");
   const governorContract = await deployer.deploy(GovernorReadArtifact, [
     "0xB8f59AF10d8C66b92d0539C898854040147f8cFf",
-    0,
-    50400,
-    0,
   ]);
 
   console.log(`// governor contract address ${governorContract.address}`);

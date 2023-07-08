@@ -18,7 +18,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   const GovernorReadArtifact = await hre.artifacts.readArtifact("PeerGovernor");
 
   const governor = new ethers.Contract(
-    "0x8340931FAfD164bFe8f802329b50Bd8644BeB52b",
+    "0xb9DD4F87d26F67F2c7072A04542627D7f2a4141A",
     GovernorReadArtifact.abi,
     wallet1
   ) as Governor;
@@ -26,7 +26,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   const proposalTx = await governor.castVote(
     ethers.BigNumber.from(
       //"108483488697189105207973731511407116515385942259030815579054678840735290608600" 666
-      "33687590986052694226245714979495645033388479289268406169597456432666066077801"
+      "85622921385258316111445715251896018711407462364451995293308734501337484696824"
     ),
     1
   );

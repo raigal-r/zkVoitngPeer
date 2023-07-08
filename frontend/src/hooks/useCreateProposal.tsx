@@ -1,20 +1,21 @@
 import { utils } from "zksync-web3";
 import { useEthersSigner } from "../useEthersSigner";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { ERC20__factory, Governor__factory } from "../types";
+import { ERC20__factory } from "../types";
 import { Address } from "viem";
 import { BigNumber } from "ethers";
 import { useZkSyncAccount } from "./useZkSyncAccount";
 import { toast } from "react-toastify";
 import { getBuiltGraphSDK } from "../../.graphclient";
 import { useQueryClient } from "wagmi";
+import { PeerGovernorV2__factory } from "../types/types";
 
 const PROPOSAL_DATA = {
   values: [0],
 };
 
-export const GOVERNOR_ADDRESS = "0x8340931FAfD164bFe8f802329b50Bd8644BeB52b";
-export const PAYMASTER_ADDRESS = "0xfcd8BCbac5c048878f83Cd5590c32b684515761F";
+export const GOVERNOR_ADDRESS = "0xb9DD4F87d26F67F2c7072A04542627D7f2a4141A";
+export const PAYMASTER_ADDRESS = "0x57525f9A9f19960F4c531b8cB6a60cce6cfe7638";
 
 export const useCreateProposal = () => {
   const signer = useEthersSigner();
@@ -29,7 +30,10 @@ export const useCreateProposal = () => {
       amount: BigNumber;
       erc20Address: Address;
     }) => {
-      const governor = Governor__factory.connect(GOVERNOR_ADDRESS, signer);
+      const governor = PeerGovernorV2__factory.connect(
+        GOVERNOR_ADDRESS,
+        signer
+      );
       const transferCalldata =
         ERC20__factory.createInterface().encodeFunctionData("transfer", [
           variables.recipient,
@@ -84,7 +88,10 @@ export const useGetProposalState = (props: { proposalId: string }) => {
     queryKey: ["proposalState", props.proposalId],
     enabled: !!props.proposalId,
     queryFn: async () => {
-      const governor = Governor__factory.connect(GOVERNOR_ADDRESS, signer);
+      const governor = PeerGovernorV2__factory.connect(
+        GOVERNOR_ADDRESS,
+        signer
+      );
       const state = await governor.state(props.proposalId);
       return ProposalStatusMap[state as ProposalStatus];
     },
@@ -99,7 +106,10 @@ export const useCastVote = () => {
   return useMutation({
     onSettled: () => queryClient.invalidateQueries(),
     mutationFn: async (props: { proposalId: string; vote: number }) => {
-      const governor = Governor__factory.connect(GOVERNOR_ADDRESS, signer);
+      const governor = PeerGovernorV2__factory.connect(
+        GOVERNOR_ADDRESS,
+        signer
+      );
       const tx = await governor.castVote(props.proposalId, props.vote);
       const receipt = await tx.wait(2);
       return receipt;
@@ -117,7 +127,10 @@ export const useCastVotePaymasterWallet = () => {
         type: "General",
         innerInput: new Uint8Array(),
       });
-      const governor = Governor__factory.connect(GOVERNOR_ADDRESS, signer);
+      const governor = PeerGovernorV2__factory.connect(
+        GOVERNOR_ADDRESS,
+        signer
+      );
 
       const proposalReceipt = await (
         await governor.castVote(props.proposalId, props.vote, {
@@ -152,7 +165,10 @@ export const useCastVotePaymaster = () => {
         innerInput: new Uint8Array(),
       });
 
-      const governor = Governor__factory.connect(GOVERNOR_ADDRESS, signer);
+      const governor = PeerGovernorV2__factory.connect(
+        GOVERNOR_ADDRESS,
+        signer
+      );
 
       const proposalReceipt = await (
         await governor.castVote(props.proposalId, props.vote, {

@@ -1,14 +1,8 @@
 
 9
 	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-R
-"smartcontracts/deploy/cast-vote.ts,3/5/35e437ed94a89de4ef1b59d2d15cde14193df0fc
 T
 $smartcontracts/deploy/cast-vote-2.ts,9/a/9a34fd050774e1b699fc11a347f36bd8772bcca5
-N
-smartcontracts/deploy/erc20.ts,d/4/d4d66d24ea37ecc274582eb5d1e3d87763ca5818
-X
-(smartcontracts/deploy/deploy-governor.ts,1/6/16eea84ef8df89b5d20e8dc860763c2a5021b5ca
 U
 %smartcontracts/deploy/get-proposal.ts,e/c/ec3b9019a478ff6047f1c9b25a665370774d327e
 x
@@ -36,8 +30,6 @@ N
 :
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
-G
-sg/peerup/networks.json,1/1/11be44f2847d446189f764a19feb0b82542817a2
 E
 frontend/.env.example,1/8/1846ed558e5a94618c8e32a9058bedda5b14420d
 K
@@ -228,8 +220,6 @@ Xfrontend/src/types/factories/@openzeppelin/contracts/governance/utils/IVotes__f
 mfrontend/src/types/factories/@openzeppelin/contracts/governance/extensions/GovernorCountingSimple__factory.ts,a/b/abbb6a7034f106d478b0585086e413bf71acfe2f
 O
 frontend/src/useEthersSigner.ts,b/7/b71ad13a8a919611ec27ff7f5bc23722d58a4dfd
-\
-,smartcontracts/contracts/VotingPaymaster.sol,5/4/54472fa304dd0a54739639598d1194260fe03274
 a
 1smartcontracts/deploy/cast-vote-with-paymaster.ts,2/2/22ee2f10a8947b0724cdac9a8c308a5630a48717
 {
@@ -578,8 +568,6 @@ q
 Afrontend/src/types/types/@matterlabs/zksync-contracts/l2/index.ts,6/e/6e0908f25f26fdc120c5e24158c86c43fed374a1
 x
 Hfrontend/src/types/types/factories/@matterlabs/zksync-contracts/index.ts,2/8/28452bfba87e6a92e2414fc7b6921f4bf3304b43
-K
-smartcontracts/package.json,d/4/d40c16e0e87ee42ff2ee96fea46cd6adee3ebeec
 ^
 .frontend/src/features/modals/useModalStore.tsx,3/c/3cf2d43cda2bb54188dbddbe7dd1880ad2470ede
 X

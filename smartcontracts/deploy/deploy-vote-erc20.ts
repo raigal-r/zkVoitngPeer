@@ -22,5 +22,5 @@ export default async function (hre: HardhatRuntimeEnvironment) {
     []
   );
 
-  console.log(`// VotingToken contract address ${votingTokenContract.address}`);
+  console.log(`// Vote contract address ${votingTokenContract.address}`);
 }

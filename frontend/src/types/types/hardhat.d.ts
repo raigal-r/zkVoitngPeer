@@ -13,6 +13,10 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "IProxy",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IProxy__factory>;
+    getContractFactory(
       name: "BootloaderUtilities",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BootloaderUtilities__factory>;
@@ -80,6 +84,10 @@ declare module "hardhat/types/runtime" {
       name: "IAccessControl",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IAccessControl__factory>;
+    getContractFactory(
+      name: "Ownable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Ownable__factory>;
     getContractFactory(
       name: "GovernorCompatibilityBravo",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -197,6 +205,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.PeerGovernor__factory>;
     getContractFactory(
+      name: "PeerGovernorV2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PeerGovernorV2__factory>;
+    getContractFactory(
       name: "PeerUSDC",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.PeerUSDC__factory>;
@@ -208,7 +220,16 @@ declare module "hardhat/types/runtime" {
       name: "VotingPaymaster",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.VotingPaymaster__factory>;
+    getContractFactory(
+      name: "VotingPaymasterWithLimit",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VotingPaymasterWithLimit__factory>;
 
+    getContractAt(
+      name: "IProxy",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IProxy>;
     getContractAt(
       name: "BootloaderUtilities",
       address: string,
@@ -294,6 +315,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IAccessControl>;
+    getContractAt(
+      name: "Ownable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Ownable>;
     getContractAt(
       name: "GovernorCompatibilityBravo",
       address: string,
@@ -440,6 +466,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.PeerGovernor>;
     getContractAt(
+      name: "PeerGovernorV2",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PeerGovernorV2>;
+    getContractAt(
       name: "PeerUSDC",
       address: string,
       signer?: ethers.Signer
@@ -454,6 +485,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.VotingPaymaster>;
+    getContractAt(
+      name: "VotingPaymasterWithLimit",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VotingPaymasterWithLimit>;
 
     // default types
     getContractFactory(
