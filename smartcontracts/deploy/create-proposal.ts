@@ -15,30 +15,31 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   const VotingTokenReadArtifact = await hre.artifacts.readArtifact(
     "PeerVoteToken"
   );
-  const GovernorReadArtifact = await hre.artifacts.readArtifact("PeerGovernor");
 
-  // deploy contract
-  //   const votingTokenContract = await deployer.deploy(deployVotingTokenArtifact,[]);
+  const GovernorReadArtifact = await deployer.loadArtifact("PeerGovernor");
+  console.log("deploying governor");
+  const governorContract = await deployer.deploy(GovernorReadArtifact, [
+    "0x0a7623ad8f66183da9aDa123F06e8397932a7631",
+    7200 /* 1 day */,
+    50400 /* 1 week */,
+    0,
+  ]);
 
-  //   console.log(`// VotingToken contract address ${votingTokenContract.address}`)
-
-  //   const governorContract = await deployer.deploy(deployGovernorArtifact,[votingTokenContract.address]);
-
-  //   console.log(`// VotingToken contract address ${governorContract.address}`)
+  console.log(`// governor contract address ${governorContract.address}`);
 
   const votingokenInterface = new ethers.utils.Interface(
     VotingTokenReadArtifact.abi
   );
 
   const teamAddress = wallet1.address;
-  const grantAmount = 4204;
+  const grantAmount = 420;
   const transferCalldata = votingokenInterface.encodeFunctionData("transfer", [
     teamAddress,
     grantAmount,
   ]);
 
   const governor = new ethers.Contract(
-    "0xe9567E29E59F103Bd89c40DDB1E95603231bed6b",
+    governorContract.address,
     GovernorReadArtifact.abi,
     wallet1
   ) as Governor;
