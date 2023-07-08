@@ -60,11 +60,10 @@ export const useGetProposalState = (props: { proposalId: string }) => {
   });
 };
 
-export const useCastVote = (props: { proposalId: string; vote: number }) => {
+export const useCastVote = () => {
   const signer = useEthersSigner();
   return useMutation({
-    mutationKey: ["castVote", props.proposalId],
-    mutationFn: async () => {
+    mutationFn: async (props: { proposalId: string; vote: number }) => {
       const governor = Governor__factory.connect(
         "0x8340931FAfD164bFe8f802329b50Bd8644BeB52b",
         signer
