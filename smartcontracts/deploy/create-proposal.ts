@@ -24,7 +24,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   const votingokenInterface = new ethers.utils.Interface(VotingTokenReadArtifact.abi);
 
   const teamAddress = wallet1.address;
-  const grantAmount = 101;
+  const grantAmount = 153;
   const transferCalldata = votingokenInterface.encodeFunctionData("transfer", [teamAddress, grantAmount]);
 
   const governor = new ethers.Contract(
@@ -33,10 +33,13 @@ export default async function (hre: HardhatRuntimeEnvironment) {
     wallet1
   );
 
-  await governor.propose(
+  const porposalId = await governor.propose(
     ["0x2AE8a8abc98d5b714608225Bac7c68Bc75cDec38"],
     [0],
     [transferCalldata],
     "funding for Barcelona public gardens",
   );
+
+  console.log(`// Proposal Id ${porposalId}`);
+  
 }
