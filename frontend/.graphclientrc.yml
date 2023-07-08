@@ -6,4 +6,4 @@ sources:
         endpoint: https://api.thegraph.com/subgraphs/name/grmkris/zkvoiting-peerup
 
 documents:
-  - 'queries/**/*.graphql'
+  - 'src/.graphclient/queries/**/*.graphql'
