@@ -34,6 +34,4 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   const mintTx = await peerVoteToken.mint(mintAmount);
   const mintReceipt = await mintTx.wait(5);
   console.log(`Mint transaction receipt: ${mintReceipt.transactionHash}`);
-
-  // Additional processing or logging if needed
 }
