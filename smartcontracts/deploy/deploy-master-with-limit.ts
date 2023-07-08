@@ -6,6 +6,8 @@ import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
 const PRIVATE_KEY =
   "0xcc1149669c0f288ae228c316d93a8fd39b766a7d5ac3f41054f74e4ee7f1a09c";
 
+const GOVERNOR_ADDRESS = "0xb9DD4F87d26F67F2c7072A04542627D7f2a4141A";
+
 export default async function (hre: HardhatRuntimeEnvironment) {
   const wallet = new Wallet(PRIVATE_KEY);
 
@@ -16,7 +18,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
     "VotingPaymasterWithLimit"
   );
   const paymaster = await deployer.deploy(paymasterArtifact, [
-    "0xb9DD4F87d26F67F2c7072A04542627D7f2a4141A",
+    GOVERNOR_ADDRESS,
   ]);
   console.log(`Paymaster address: ${paymaster.address}`);
 
