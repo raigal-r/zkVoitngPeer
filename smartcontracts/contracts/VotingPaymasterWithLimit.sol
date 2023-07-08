@@ -73,16 +73,18 @@ contract VotingPaymasterWithLimit is IPaymaster, Ownable {
                 "Transaction are subsidized only for our governer" 
             );
             
+            // use API3 to get USDC and ETH prices in USD
             uint256 ETHUSDCPrice = readDapi(ETHdAPIProxy);
             uint256 USDCUSDPrice = readDapi(USDCdAPIProxy);
 
-            // Note, that while the minimal amount of ETH needed is tx.gasPrice * tx.gasLimit,
-            // neither paymaster nor account are allowed to access this context variable.
+            // calculate the required Eth
             uint256 requiredETH = _transaction.gasLimit *
                 _transaction.maxFeePerGas;
 
+            // calculate Eth fees amount in USDC
             uint256 requiredERC20 = (requiredETH * ETHUSDCPrice)/USDCUSDPrice;
 
+            // get proposolId from transaction data
             uint256 proposalId;
             bytes memory transactionInput = _transaction.data;
             assembly {
@@ -93,7 +95,7 @@ contract VotingPaymasterWithLimit is IPaymaster, Ownable {
             // we allow only a specific amount from DAO treasury
             require(
                 proposalsFees[proposalId] + requiredERC20 <= 10000000000000000000000000,
-                "Total Subsidzed fees limit is reached"
+                "Total Subsidized fees limit is reached"
             );
 
             proposalsFees[proposalId] = proposalsFees[proposalId] + requiredERC20;
