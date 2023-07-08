@@ -1,0 +1,2 @@
+schema: https://api.thegraph.com/subgraphs/name/grmkris/zkvoiting-peerup
+documents: '**/*.graphql'

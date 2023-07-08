@@ -1,0 +1,8 @@
+{
+  "zkSync2-testnet": {
+    "PeerGovernor": {
+      "address": "0x8340931FAfD164bFe8f802329b50Bd8644BeB52b",
+      "startBlock": 9165430
+    }
+  }
+}
