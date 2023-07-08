@@ -6,3 +6,4 @@ export type { PeerGovernorV2 } from "./PeerGovernorV2";
 export type { PeerUSDC } from "./PeerUSDC";
 export type { PeerVoteToken } from "./PeerVoteToken";
 export type { VotingPaymaster } from "./VotingPaymaster";
+export type { VotingPaymasterWithLimit } from "./VotingPaymasterWithLimit";

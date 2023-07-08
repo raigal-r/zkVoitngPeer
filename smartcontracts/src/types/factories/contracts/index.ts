@@ -6,3 +6,4 @@ export { PeerGovernorV2__factory } from "./PeerGovernorV2__factory";
 export { PeerUSDC__factory } from "./PeerUSDC__factory";
 export { PeerVoteToken__factory } from "./PeerVoteToken__factory";
 export { VotingPaymaster__factory } from "./VotingPaymaster__factory";
+export { VotingPaymasterWithLimit__factory } from "./VotingPaymasterWithLimit__factory";
