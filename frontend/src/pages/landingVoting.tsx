@@ -35,6 +35,7 @@ const LandingVoting: NextPage = () => {
                     <th>Description</th>
                     <th>Vote End</th>
                     <th>Vote Start</th>
+                    <th>Status</th>
                     <th>CTA</th>
                   </tr>
                 </thead>
@@ -51,7 +52,7 @@ const LandingVoting: NextPage = () => {
                       <td>
                         <Link
                           className="btn-accent btn"
-                          href={"/voting/" + item.id}
+                          href={"/voting/" + item.proposalId}
                         >
                           Details
                         </Link>

@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Layout } from "../../features/Layout";
+import { useCastVote } from "src/hooks/useCreateProposal";
 
 const Welcome: NextPage = () => {
     const router = useRouter();
@@ -11,6 +12,20 @@ const Welcome: NextPage = () => {
         title: "Voting 2",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget aliquam quam. Donec euismod, nisl vitae aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nisl nunc eu nisl. Donec euismod, nisl vitae aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nisl nunc eu nisl.",
         status: "active"
+    }
+    const { votingId } = router.query;
+
+    // Create a function to use useCastVote hook to vote yes/no
+    const castVote = useCastVote();
+
+    // get the proposalId from the url
+
+
+    const voteYes = () => {
+        castVote.mutate({
+            proposalId: "",
+            vote: 1 //
+        });
     }
 
     return (
@@ -25,6 +40,7 @@ const Welcome: NextPage = () => {
                     <div className="flex flex-col w-2/3">
                         <h2>
                             Subject: {mockData.title}
+                            ID: {votingId}
                         </h2>
                         <div className="badge badge-secondary">
                             status: {mockData.status}
@@ -49,12 +65,15 @@ const Welcome: NextPage = () => {
                         Yes: 5
                         No: 3
                         <div className="flex ">
-                            <button className="btn btn-accent mx-15">Yes</button>
+                            <button className="btn btn-accent mx-15" onClick={() => castVote.mutate({
+                                proposalId: votingId as string,
+                                vote: 1 //
+                            })}>Yes</button>
                             <button className="btn btn-secondary py-10">No</button>
                         </div>
                     </div>
                 </div>
-            </Layout>
+            </Layout >
         </>
     );
 };
