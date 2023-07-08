@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 import { Address } from "viem";
 import { useImmer } from "use-immer";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const Landing: NextPage = () => {
   const [formData, updateFormData] = useImmer<{
@@ -22,7 +23,7 @@ const Landing: NextPage = () => {
     token: "0x...",
   });
   const createProposal = useCreateProposal();
-
+  const router = useRouter();
   const onSubmit = () => {
     if (formData.amount.eq(0)) toast.error("Please enter an amount");
     else if (formData.recipient === "0x...")
@@ -135,7 +136,7 @@ const Landing: NextPage = () => {
                 >
                   Create
                 </button>
-                <button className="btn-secondary btn">Cancel</button>
+                <button className="btn-secondary btn" onClick={() => router.push("/landingVoting")}>Cancel</button>
               </div>
             </div>
           </div>

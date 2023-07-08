@@ -45,13 +45,14 @@ const Welcome: NextPage = () => {
             <div className="flex flex-col">
               <p>History:</p>
               <div className="flex flex-col">
-                {votes.data?.votes?.map((item) => (
-                  <div className="flex flex-col" key={item.transactionHash}>
-                    <p>{item.voter}</p>
-                    <p>{item.support === 0 ? "NO" : "YES"}</p>
-                    <p>{new Date(item.blockTimestamp * 1000).toDateString()}</p>
-                  </div>
-                ))}
+                {votes.data?.votes?.sort((a, b) => b.blockTimestamp - a.blockTimestamp)
+                  .map((item) => (
+                    <div className="flex flex-col" key={item.transactionHash}>
+                      <p>{item.voter}</p>
+                      <p>{item.support === 0 ? "NO" : "YES"}</p>
+                      <p>{new Date(item.blockTimestamp * 1000).toLocaleString()}</p>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
