@@ -18,11 +18,9 @@ dataSources:
         - ProposalCanceled
         - ProposalCreated
         - ProposalExecuted
-        - ProposalThresholdSet
         - QuorumNumeratorUpdated
         - VoteCast
         - VoteCastWithParams
-        - VotingDelaySet
         - VotingPeriodSet
       abis:
         - name: PeerGovernor
@@ -36,16 +34,10 @@ dataSources:
           handler: handleProposalCreated
         - event: ProposalExecuted(uint256)
           handler: handleProposalExecuted
-        - event: ProposalThresholdSet(uint256,uint256)
-          handler: handleProposalThresholdSet
         - event: QuorumNumeratorUpdated(uint256,uint256)
           handler: handleQuorumNumeratorUpdated
         - event: VoteCast(indexed address,uint256,uint8,uint256,string)
           handler: handleVoteCast
         - event: VoteCastWithParams(indexed address,uint256,uint8,uint256,string,bytes)
           handler: handleVoteCastWithParams
-        - event: VotingDelaySet(uint256,uint256)
-          handler: handleVotingDelaySet
-        - event: VotingPeriodSet(uint256,uint256)
-          handler: handleVotingPeriodSet
       file: ./src/peer-governor.ts

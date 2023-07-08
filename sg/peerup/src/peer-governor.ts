@@ -3,26 +3,20 @@ import {
   ProposalCanceled as ProposalCanceledEvent,
   ProposalCreated as ProposalCreatedEvent,
   ProposalExecuted as ProposalExecutedEvent,
-  ProposalThresholdSet as ProposalThresholdSetEvent,
   QuorumNumeratorUpdated as QuorumNumeratorUpdatedEvent,
   VoteCast as VoteCastEvent,
-  VoteCastWithParams as VoteCastWithParamsEvent,
-  VotingDelaySet as VotingDelaySetEvent,
-  VotingPeriodSet as VotingPeriodSetEvent
+  VoteCastWithParams as VoteCastWithParamsEvent
 } from "../generated/PeerGovernor/PeerGovernor";
 import {
   EIP712DomainChanged,
   ProposalCanceled,
   ProposalCreated,
   ProposalExecuted,
-  ProposalThresholdSet,
   QuorumNumeratorUpdated,
   VoteCast,
-  VoteCastWithParams,
-  VotingDelaySet,
-  VotingPeriodSet
+  VoteCastWithParams
 } from "../generated/schema";
-import { Address, Bytes } from "@graphprotocol/graph-ts";
+import { Bytes } from "@graphprotocol/graph-ts";
 
 export function handleEIP712DomainChanged(
   event: EIP712DomainChangedEvent
@@ -85,22 +79,6 @@ export function handleProposalExecuted(event: ProposalExecutedEvent): void {
   entity.save();
 }
 
-export function handleProposalThresholdSet(
-  event: ProposalThresholdSetEvent
-): void {
-  let entity = new ProposalThresholdSet(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  );
-  entity.oldProposalThreshold = event.params.oldProposalThreshold;
-  entity.newProposalThreshold = event.params.newProposalThreshold;
-
-  entity.blockNumber = event.block.number;
-  entity.blockTimestamp = event.block.timestamp;
-  entity.transactionHash = event.transaction.hash;
-
-  entity.save();
-}
-
 export function handleQuorumNumeratorUpdated(
   event: QuorumNumeratorUpdatedEvent
 ): void {
@@ -144,34 +122,6 @@ export function handleVoteCastWithParams(event: VoteCastWithParamsEvent): void {
   entity.weight = event.params.weight;
   entity.reason = event.params.reason;
   entity.params = event.params.params;
-
-  entity.blockNumber = event.block.number;
-  entity.blockTimestamp = event.block.timestamp;
-  entity.transactionHash = event.transaction.hash;
-
-  entity.save();
-}
-
-export function handleVotingDelaySet(event: VotingDelaySetEvent): void {
-  let entity = new VotingDelaySet(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  );
-  entity.oldVotingDelay = event.params.oldVotingDelay;
-  entity.newVotingDelay = event.params.newVotingDelay;
-
-  entity.blockNumber = event.block.number;
-  entity.blockTimestamp = event.block.timestamp;
-  entity.transactionHash = event.transaction.hash;
-
-  entity.save();
-}
-
-export function handleVotingPeriodSet(event: VotingPeriodSetEvent): void {
-  let entity = new VotingPeriodSet(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  );
-  entity.oldVotingPeriod = event.params.oldVotingPeriod;
-  entity.newVotingPeriod = event.params.newVotingPeriod;
 
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
