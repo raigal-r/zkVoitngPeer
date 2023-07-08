@@ -10,11 +10,11 @@ import "@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.so
 
 contract PeerGovernor is Governor, GovernorCompatibilityBravo, GovernorVotes, GovernorVotesQuorumFraction, GovernorTimelockControl {
     constructor(IVotes _token, TimelockController _timelock)
-        Governor("PeerGovernor")
+      Governor("PeerGovernor")
         GovernorVotes(_token)
         GovernorVotesQuorumFraction(4)
         GovernorTimelockControl(_timelock)
-    {}
+        {}
 
     // The following functions are overrides required by Solidity.
 

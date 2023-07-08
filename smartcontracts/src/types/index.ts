@@ -46,10 +46,6 @@ export type { GovernorCompatibilityBravo } from "./@openzeppelin/contracts/gover
 export { GovernorCompatibilityBravo__factory } from "./factories/@openzeppelin/contracts/governance/compatibility/GovernorCompatibilityBravo__factory";
 export type { IGovernorCompatibilityBravo } from "./@openzeppelin/contracts/governance/compatibility/IGovernorCompatibilityBravo";
 export { IGovernorCompatibilityBravo__factory } from "./factories/@openzeppelin/contracts/governance/compatibility/IGovernorCompatibilityBravo__factory";
-export type { GovernorCountingSimple } from "./@openzeppelin/contracts/governance/extensions/GovernorCountingSimple";
-export { GovernorCountingSimple__factory } from "./factories/@openzeppelin/contracts/governance/extensions/GovernorCountingSimple__factory";
-export type { GovernorSettings } from "./@openzeppelin/contracts/governance/extensions/GovernorSettings";
-export { GovernorSettings__factory } from "./factories/@openzeppelin/contracts/governance/extensions/GovernorSettings__factory";
 export type { GovernorTimelockControl } from "./@openzeppelin/contracts/governance/extensions/GovernorTimelockControl";
 export { GovernorTimelockControl__factory } from "./factories/@openzeppelin/contracts/governance/extensions/GovernorTimelockControl__factory";
 export type { GovernorVotes } from "./@openzeppelin/contracts/governance/extensions/GovernorVotes";
