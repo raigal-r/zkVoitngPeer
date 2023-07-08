@@ -75,6 +75,9 @@ export const useGetProposalState = (props: { proposalId: string }) => {
   });
 };
 
+
+// 0 = no ?
+// 1 = yes ?
 export const useCastVote = () => {
   const signer = useEthersSigner();
   return useMutation({
