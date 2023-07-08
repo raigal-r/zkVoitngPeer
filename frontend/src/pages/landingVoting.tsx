@@ -70,7 +70,7 @@ const Landing: NextPage = () => {
                                             <td>{item.title}</td>
                                             <td>{item.status}</td>
                                             <td>
-                                                <Link className="btn btn-accent" href={"/vote/" + item.id}>Details</Link>
+                                                <Link className="btn btn-accent" href={"/voting/" + item.id}>Details</Link>
                                             </td>
                                         </tr>
                                     ))}
