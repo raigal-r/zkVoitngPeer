@@ -56,7 +56,8 @@ const Welcome: NextPage = () => {
             </div>
           </div>
           <div className="flex w-1/3 flex-col">
-            Please vote yes / no below. Voting ends in 15d, 12h, 32m
+            Please vote yes / no below. Voting ends in{" "}
+            {proposalData.data?.proposalCreateds[0]?.voteEnd}
             <p>
               Total votes: {Number(votes.data?.yes) + Number(votes.data?.no)}
             </p>
