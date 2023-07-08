@@ -1,0 +1,11 @@
+query proposals {
+    proposalCreateds{
+        id
+        description
+        transactionHash
+        voteEnd
+        voteStart
+        proposer
+        proposalId
+    }
+}
