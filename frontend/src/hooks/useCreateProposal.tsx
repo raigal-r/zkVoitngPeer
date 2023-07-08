@@ -46,6 +46,19 @@ export const useCreateProposal = () => {
   });
 };
 
+export const ProposalStatusMap = {
+  0: "Pending",
+  1: "Active",
+  2: "Canceled",
+  3: "Defeated",
+  4: "Succeeded",
+  5: "Queued",
+  6: "Expired",
+  7: "Executed",
+};
+
+export type ProposalStatus = keyof typeof ProposalStatusMap;
+
 export const useGetProposalState = (props: { proposalId: string }) => {
   const signer = useEthersSigner();
   return useQuery({
@@ -55,7 +68,8 @@ export const useGetProposalState = (props: { proposalId: string }) => {
         "0x8340931FAfD164bFe8f802329b50Bd8644BeB52b",
         signer
       );
-      return await governor.state(props.proposalId);
+      const state = await governor.state(props.proposalId);
+      return ProposalStatusMap[state as ProposalStatus];
     },
   });
 };
