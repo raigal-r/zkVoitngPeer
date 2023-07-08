@@ -24,6 +24,12 @@ const config = {
       fs: false,
       net: false,
       tls: false,
+      module: false,
+      dns: false,
+      child_process: false,
+      repl: false,
+      console: false,
+      cluster: false,
     };
     return config;
   },

@@ -9,3 +9,13 @@ query proposals {
         proposalId
     }
 }
+
+
+query votes {
+    voteCasts{
+        proposalId
+        transactionHash
+        id
+        voter
+    }
+}
