@@ -2,6 +2,12 @@ import { Wallet, utils, Provider, EIP712Signer, types } from "zksync-web3";
 import * as ethers from "ethers";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
+import {PeerGovernor} from 'contracts/PeerGovernor.sol'
+
+const provider = new ethers.providers.JsonRpcProvider('https://ropsten.infura.io/v3/YOUR_INFURA_PROJECT_ID'); // Replace with your Ethereum network provider
+const signer = provider.getSigner();
+const governorAddress = '0xGOVERNOR_ADDRESS'; // Replace with the address of the deployed PeerGovernor contract
+const governorContract = new ethers.Contract(governorAddress, PeerGovernor.abi, signer);
 
 export default async function (hre: HardhatRuntimeEnvironment) {
   const provider = new Provider("https://testnet.era.zksync.dev");
