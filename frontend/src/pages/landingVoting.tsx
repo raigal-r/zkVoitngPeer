@@ -3,41 +3,9 @@ import Head from "next/head";
 import { Layout } from "../features/Layout";
 import Link from "next/link";
 import { useProposals } from "src/hooks/useProposals";
+import { useGetProposalState } from "src/hooks/useCreateProposal";
 
 const LandingVoting: NextPage = () => {
-  const mockData = [
-    {
-      id: 1,
-      title: "Beers",
-      description: "We need more beers for the community garden",
-      status: "active",
-    },
-    {
-      id: 2,
-      title: "Voting 2",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget aliquam quam. Donec euismod, nisl vitae aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nisl nunc eu nisl. Donec euismod, nisl vitae aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nisl nunc eu nisl.",
-      status: "active",
-    },
-    {
-      id: 3,
-      title: "Allow Dogs",
-      description: "We want to allow dogs in the garden",
-      status: "inactive",
-    },
-    {
-      id: 4,
-      title: "Ban dogs",
-      description: "We dont like dogs in the garden",
-      status: "inactive",
-    },
-    {
-      id: 5,
-      title: "Draft: Water for the garden",
-      description: "We are still in draft mode...",
-      status: "draft",
-    },
-  ];
   const proposals = useProposals();
 
   return (
@@ -64,17 +32,22 @@ const LandingVoting: NextPage = () => {
                 <thead>
                   <tr>
                     <th></th>
-                    <th>Title</th>
-                    <th>Status</th>
-                    <th></th>
+                    <th>Description</th>
+                    <th>Vote End</th>
+                    <th>Vote Start</th>
+                    <th>CTA</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {mockData.map((item) => (
+                  {proposals.data?.proposalCreateds.map((item) => (
                     <tr key={item.id}>
-                      <td>{item.id}</td>
-                      <td>{item.title}</td>
-                      <td>{item.status}</td>
+                      <td>{item.id.slice(0, 6)}</td>
+                      <td>{item.description}</td>
+                      <td>{item.voteEnd}</td>
+                      <td>{item.voteStart}</td>
+                      <td>
+                        <ProposalStatus proposalID={item.proposalId} />
+                      </td>
                       <td>
                         <Link
                           className="btn-accent btn"
@@ -96,3 +69,12 @@ const LandingVoting: NextPage = () => {
 };
 
 export default LandingVoting;
+
+export const ProposalStatus = (props: { proposalID: string }) => {
+  const proposalState = useGetProposalState({ proposalId: props.proposalID });
+  return proposalState.isLoading ? (
+    <div>Loading...</div>
+  ) : (
+    <div>{proposalState.data}</div>
+  );
+};

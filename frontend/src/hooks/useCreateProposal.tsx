@@ -46,6 +46,19 @@ export const useCreateProposal = () => {
   });
 };
 
+export const ProposalStatusMap = {
+  0: "Pending",
+  1: "Active",
+  2: "Canceled",
+  3: "Defeated",
+  4: "Succeeded",
+  5: "Queued",
+  6: "Expired",
+  7: "Executed",
+};
+
+export type ProposalStatus = keyof typeof ProposalStatusMap;
+
 export const useGetProposalState = (props: { proposalId: string }) => {
   const signer = useEthersSigner();
   return useQuery({
@@ -55,16 +68,16 @@ export const useGetProposalState = (props: { proposalId: string }) => {
         "0x8340931FAfD164bFe8f802329b50Bd8644BeB52b",
         signer
       );
-      return await governor.state(props.proposalId);
+      const state = await governor.state(props.proposalId);
+      return ProposalStatusMap[state as ProposalStatus];
     },
   });
 };
 
-export const useCastVote = (props: { proposalId: string; vote: number }) => {
+export const useCastVote = () => {
   const signer = useEthersSigner();
   return useMutation({
-    mutationKey: ["castVote", props.proposalId],
-    mutationFn: async () => {
+    mutationFn: async (props: { proposalId: string; vote: number }) => {
       const governor = Governor__factory.connect(
         "0x8340931FAfD164bFe8f802329b50Bd8644BeB52b",
         signer
