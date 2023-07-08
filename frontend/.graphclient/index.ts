@@ -3,25 +3,13 @@ import { GraphQLResolveInfo, SelectionSetNode, FieldNode, GraphQLScalarType, Gra
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 import { gql } from '@graphql-mesh/utils';
 
-import type { GetMeshOptions } from '@graphql-mesh/runtime';
-import type { YamlConfig } from '@graphql-mesh/types';
-import { PubSub } from '@graphql-mesh/utils';
-import { DefaultLogger } from '@graphql-mesh/utils';
-import MeshCache from "@graphql-mesh/cache-localforage";
-import { fetch as fetchFn } from '@whatwg-node/fetch';
-
-import { MeshResolvedSource } from '@graphql-mesh/runtime';
-import { MeshTransform, MeshPlugin } from '@graphql-mesh/types';
-import GraphqlHandler from "@graphql-mesh/graphql"
-import BareMerger from "@graphql-mesh/merger-bare";
-import { printWithCache } from '@graphql-mesh/utils';
+import { findAndParseConfig } from '@graphql-mesh/cli';
 import { createMeshHTTPHandler, MeshHTTPHandler } from '@graphql-mesh/http';
 import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext, MeshInstance } from '@graphql-mesh/runtime';
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
 import type { ZkvoitingPeerupTypes } from './sources/zkvoiting-peerup/types';
-import * as importedModule$0 from "./sources/zkvoiting-peerup/introspectionSchema";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -1802,9 +1790,6 @@ const baseDir = pathModule.join(pathModule.dirname(fileURLToPath(import.meta.url
 const importFn: ImportFn = <T>(moduleId: string) => {
   const relativeModuleId = (pathModule.isAbsolute(moduleId) ? pathModule.relative(baseDir, moduleId) : moduleId).split('\\').join('/').replace(baseDir + '/', '');
   switch(relativeModuleId) {
-    case ".graphclient/sources/zkvoiting-peerup/introspectionSchema":
-      return Promise.resolve(importedModule$0) as T;
-    
     default:
       return Promise.reject(new Error(`Cannot find module '${relativeModuleId}'.`));
   }
@@ -1819,70 +1804,15 @@ const rootStore = new MeshStore('.graphclient', new FsStoreStorageAdapter({
   validate: false
 });
 
-export const rawServeConfig: YamlConfig.Config['serve'] = undefined as any
-export async function getMeshOptions(): Promise<GetMeshOptions> {
-const pubsub = new PubSub();
-const sourcesStore = rootStore.child('sources');
-const logger = new DefaultLogger("GraphClient");
-const cache = new (MeshCache as any)({
-      ...({} as any),
-      importFn,
-      store: rootStore.child('cache'),
-      pubsub,
-      logger,
-    } as any)
-
-const sources: MeshResolvedSource[] = [];
-const transforms: MeshTransform[] = [];
-const additionalEnvelopPlugins: MeshPlugin<any>[] = [];
-const zkvoitingPeerupTransforms = [];
-const additionalTypeDefs = [] as any[];
-const zkvoitingPeerupHandler = new GraphqlHandler({
-              name: "zkvoiting-peerup",
-              config: {"endpoint":"https://api.thegraph.com/subgraphs/name/grmkris/zkvoiting-peerup"},
-              baseDir,
-              cache,
-              pubsub,
-              store: sourcesStore.child("zkvoiting-peerup"),
-              logger: logger.child("zkvoiting-peerup"),
-              importFn,
-            });
-sources[0] = {
-          name: 'zkvoiting-peerup',
-          handler: zkvoitingPeerupHandler,
-          transforms: zkvoitingPeerupTransforms
-        }
-const additionalResolvers = [] as any[]
-const merger = new(BareMerger as any)({
-        cache,
-        pubsub,
-        logger: logger.child('bareMerger'),
-        store: rootStore.child('bareMerger')
-      })
-
-  return {
-    sources,
-    transforms,
-    additionalTypeDefs,
-    additionalResolvers,
-    cache,
-    pubsub,
-    merger,
-    logger,
-    additionalEnvelopPlugins,
-    get documents() {
-      return [
-      {
-        document: ProposalsDocument,
-        get rawSDL() {
-          return printWithCache(ProposalsDocument);
-        },
-        location: 'ProposalsDocument.graphql'
-      }
-    ];
-    },
-    fetchFn,
-  };
+export function getMeshOptions() {
+  console.warn('WARNING: These artifacts are built for development mode. Please run "graphclient build" to build production artifacts');
+  return findAndParseConfig({
+    dir: baseDir,
+    artifactsDir: ".graphclient",
+    configName: "graphclient",
+    additionalPackagePrefixes: ["@graphprotocol/client-"],
+    initialLoggerPrefix: "GraphClient",
+  });
 }
 
 export function createBuiltMeshHTTPHandler<TServerContext = {}>(): MeshHTTPHandler<TServerContext> {
@@ -1892,7 +1822,6 @@ export function createBuiltMeshHTTPHandler<TServerContext = {}>(): MeshHTTPHandl
     rawServeConfig: undefined,
   })
 }
-
 
 let meshInstance$: Promise<MeshInstance> | undefined;
 

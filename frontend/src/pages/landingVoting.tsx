@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { Layout } from "../features/Layout";
 import Link from "next/link";
+import { useProposals } from "src/hooks/useProposals";
 
 const Landing: NextPage = () => {
     const mockData = [
@@ -36,6 +37,9 @@ const Landing: NextPage = () => {
         }
 
     ]
+    const proposals = useProposals()
+    
+
     return (
         <>
             <Head>
