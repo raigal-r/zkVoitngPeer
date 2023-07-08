@@ -9,6 +9,14 @@ contract PeerVoteToken is ERC20, ERC20Permit, ERC20Votes {
     constructor() ERC20("PeerVoteToken", "PEERV") ERC20Permit("PeerVoteToken") {}
 
     // The functions below are overrides required by Solidity.
+    function clock() public view override returns (uint48) {
+        return uint48(block.timestamp);
+    }
+
+    // solhint-disable-next-line func-name-mixedcase
+    function CLOCK_MODE() public pure override returns (string memory) {
+        return "mode=timestamp";
+    }
 
     function _afterTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Votes) {
         super._afterTokenTransfer(from, to, amount);
@@ -22,7 +30,7 @@ contract PeerVoteToken is ERC20, ERC20Permit, ERC20Votes {
         super._burn(account, amount);
     }
 
-    function mint(uint256 amount) public {
-        _mint(msg.sender, amount);
+    function mint(uint256 amount, address receiver) public {
+        _mint(receiver, amount);
     }
 }

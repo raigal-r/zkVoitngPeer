@@ -110,24 +110,24 @@ export class ProposalExecuted__Params {
   }
 }
 
-export class ProposalThresholdSet extends ethereum.Event {
-  get params(): ProposalThresholdSet__Params {
-    return new ProposalThresholdSet__Params(this);
+export class ProposalQueued extends ethereum.Event {
+  get params(): ProposalQueued__Params {
+    return new ProposalQueued__Params(this);
   }
 }
 
-export class ProposalThresholdSet__Params {
-  _event: ProposalThresholdSet;
+export class ProposalQueued__Params {
+  _event: ProposalQueued;
 
-  constructor(event: ProposalThresholdSet) {
+  constructor(event: ProposalQueued) {
     this._event = event;
   }
 
-  get oldProposalThreshold(): BigInt {
+  get proposalId(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get newProposalThreshold(): BigInt {
+  get eta(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
 }
@@ -151,6 +151,28 @@ export class QuorumNumeratorUpdated__Params {
 
   get newQuorumNumerator(): BigInt {
     return this._event.parameters[1].value.toBigInt();
+  }
+}
+
+export class TimelockChange extends ethereum.Event {
+  get params(): TimelockChange__Params {
+    return new TimelockChange__Params(this);
+  }
+}
+
+export class TimelockChange__Params {
+  _event: TimelockChange;
+
+  constructor(event: TimelockChange) {
+    this._event = event;
+  }
+
+  get oldTimelock(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get newTimelock(): Address {
+    return this._event.parameters[1].value.toAddress();
   }
 }
 
@@ -226,50 +248,6 @@ export class VoteCastWithParams__Params {
   }
 }
 
-export class VotingDelaySet extends ethereum.Event {
-  get params(): VotingDelaySet__Params {
-    return new VotingDelaySet__Params(this);
-  }
-}
-
-export class VotingDelaySet__Params {
-  _event: VotingDelaySet;
-
-  constructor(event: VotingDelaySet) {
-    this._event = event;
-  }
-
-  get oldVotingDelay(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get newVotingDelay(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
-}
-
-export class VotingPeriodSet extends ethereum.Event {
-  get params(): VotingPeriodSet__Params {
-    return new VotingPeriodSet__Params(this);
-  }
-}
-
-export class VotingPeriodSet__Params {
-  _event: VotingPeriodSet;
-
-  constructor(event: VotingPeriodSet) {
-    this._event = event;
-  }
-
-  get oldVotingPeriod(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get newVotingPeriod(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
-}
-
 export class PeerGovernor__eip712DomainResult {
   value0: Bytes;
   value1: string;
@@ -338,35 +316,153 @@ export class PeerGovernor__eip712DomainResult {
   }
 }
 
-export class PeerGovernor__proposalVotesResult {
-  value0: BigInt;
-  value1: BigInt;
-  value2: BigInt;
+export class PeerGovernor__getActionsResult {
+  value0: Array<Address>;
+  value1: Array<BigInt>;
+  value2: Array<string>;
+  value3: Array<Bytes>;
 
-  constructor(value0: BigInt, value1: BigInt, value2: BigInt) {
+  constructor(
+    value0: Array<Address>,
+    value1: Array<BigInt>,
+    value2: Array<string>,
+    value3: Array<Bytes>
+  ) {
     this.value0 = value0;
     this.value1 = value1;
     this.value2 = value2;
+    this.value3 = value3;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromAddressArray(this.value0));
+    map.set("value1", ethereum.Value.fromUnsignedBigIntArray(this.value1));
+    map.set("value2", ethereum.Value.fromStringArray(this.value2));
+    map.set("value3", ethereum.Value.fromBytesArray(this.value3));
+    return map;
+  }
+
+  getTargets(): Array<Address> {
+    return this.value0;
+  }
+
+  getValues(): Array<BigInt> {
+    return this.value1;
+  }
+
+  getSignatures(): Array<string> {
+    return this.value2;
+  }
+
+  getCalldatas(): Array<Bytes> {
+    return this.value3;
+  }
+}
+
+export class PeerGovernor__getReceiptResultValue0Struct extends ethereum.Tuple {
+  get hasVoted(): boolean {
+    return this[0].toBoolean();
+  }
+
+  get support(): i32 {
+    return this[1].toI32();
+  }
+
+  get votes(): BigInt {
+    return this[2].toBigInt();
+  }
+}
+
+export class PeerGovernor__proposalsResult {
+  value0: BigInt;
+  value1: Address;
+  value2: BigInt;
+  value3: BigInt;
+  value4: BigInt;
+  value5: BigInt;
+  value6: BigInt;
+  value7: BigInt;
+  value8: boolean;
+  value9: boolean;
+
+  constructor(
+    value0: BigInt,
+    value1: Address,
+    value2: BigInt,
+    value3: BigInt,
+    value4: BigInt,
+    value5: BigInt,
+    value6: BigInt,
+    value7: BigInt,
+    value8: boolean,
+    value9: boolean
+  ) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+    this.value3 = value3;
+    this.value4 = value4;
+    this.value5 = value5;
+    this.value6 = value6;
+    this.value7 = value7;
+    this.value8 = value8;
+    this.value9 = value9;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
     let map = new TypedMap<string, ethereum.Value>();
     map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
-    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    map.set("value1", ethereum.Value.fromAddress(this.value1));
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
+    map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
+    map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
+    map.set("value5", ethereum.Value.fromUnsignedBigInt(this.value5));
+    map.set("value6", ethereum.Value.fromUnsignedBigInt(this.value6));
+    map.set("value7", ethereum.Value.fromUnsignedBigInt(this.value7));
+    map.set("value8", ethereum.Value.fromBoolean(this.value8));
+    map.set("value9", ethereum.Value.fromBoolean(this.value9));
     return map;
   }
 
-  getAgainstVotes(): BigInt {
+  getId(): BigInt {
     return this.value0;
   }
 
-  getForVotes(): BigInt {
+  getProposer(): Address {
     return this.value1;
   }
 
-  getAbstainVotes(): BigInt {
+  getEta(): BigInt {
     return this.value2;
+  }
+
+  getStartBlock(): BigInt {
+    return this.value3;
+  }
+
+  getEndBlock(): BigInt {
+    return this.value4;
+  }
+
+  getForVotes(): BigInt {
+    return this.value5;
+  }
+
+  getAgainstVotes(): BigInt {
+    return this.value6;
+  }
+
+  getAbstainVotes(): BigInt {
+    return this.value7;
+  }
+
+  getCanceled(): boolean {
+    return this.value8;
+  }
+
+  getExecuted(): boolean {
+    return this.value9;
   }
 }
 
@@ -755,6 +851,82 @@ export class PeerGovernor extends ethereum.SmartContract {
     );
   }
 
+  getActions(proposalId: BigInt): PeerGovernor__getActionsResult {
+    let result = super.call(
+      "getActions",
+      "getActions(uint256):(address[],uint256[],string[],bytes[])",
+      [ethereum.Value.fromUnsignedBigInt(proposalId)]
+    );
+
+    return new PeerGovernor__getActionsResult(
+      result[0].toAddressArray(),
+      result[1].toBigIntArray(),
+      result[2].toStringArray(),
+      result[3].toBytesArray()
+    );
+  }
+
+  try_getActions(
+    proposalId: BigInt
+  ): ethereum.CallResult<PeerGovernor__getActionsResult> {
+    let result = super.tryCall(
+      "getActions",
+      "getActions(uint256):(address[],uint256[],string[],bytes[])",
+      [ethereum.Value.fromUnsignedBigInt(proposalId)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new PeerGovernor__getActionsResult(
+        value[0].toAddressArray(),
+        value[1].toBigIntArray(),
+        value[2].toStringArray(),
+        value[3].toBytesArray()
+      )
+    );
+  }
+
+  getReceipt(
+    proposalId: BigInt,
+    voter: Address
+  ): PeerGovernor__getReceiptResultValue0Struct {
+    let result = super.call(
+      "getReceipt",
+      "getReceipt(uint256,address):((bool,uint8,uint96))",
+      [
+        ethereum.Value.fromUnsignedBigInt(proposalId),
+        ethereum.Value.fromAddress(voter)
+      ]
+    );
+
+    return changetype<PeerGovernor__getReceiptResultValue0Struct>(
+      result[0].toTuple()
+    );
+  }
+
+  try_getReceipt(
+    proposalId: BigInt,
+    voter: Address
+  ): ethereum.CallResult<PeerGovernor__getReceiptResultValue0Struct> {
+    let result = super.tryCall(
+      "getReceipt",
+      "getReceipt(uint256,address):((bool,uint8,uint96))",
+      [
+        ethereum.Value.fromUnsignedBigInt(proposalId),
+        ethereum.Value.fromAddress(voter)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      changetype<PeerGovernor__getReceiptResultValue0Struct>(value[0].toTuple())
+    );
+  }
+
   getVotes(account: Address, timepoint: BigInt): BigInt {
     let result = super.call("getVotes", "getVotes(address,uint256):(uint256)", [
       ethereum.Value.fromAddress(account),
@@ -1064,6 +1236,27 @@ export class PeerGovernor extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  proposalEta(proposalId: BigInt): BigInt {
+    let result = super.call("proposalEta", "proposalEta(uint256):(uint256)", [
+      ethereum.Value.fromUnsignedBigInt(proposalId)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_proposalEta(proposalId: BigInt): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "proposalEta",
+      "proposalEta(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(proposalId)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   proposalProposer(proposalId: BigInt): Address {
     let result = super.call(
       "proposalProposer",
@@ -1133,26 +1326,33 @@ export class PeerGovernor extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  proposalVotes(proposalId: BigInt): PeerGovernor__proposalVotesResult {
+  proposals(proposalId: BigInt): PeerGovernor__proposalsResult {
     let result = super.call(
-      "proposalVotes",
-      "proposalVotes(uint256):(uint256,uint256,uint256)",
+      "proposals",
+      "proposals(uint256):(uint256,address,uint256,uint256,uint256,uint256,uint256,uint256,bool,bool)",
       [ethereum.Value.fromUnsignedBigInt(proposalId)]
     );
 
-    return new PeerGovernor__proposalVotesResult(
+    return new PeerGovernor__proposalsResult(
       result[0].toBigInt(),
-      result[1].toBigInt(),
-      result[2].toBigInt()
+      result[1].toAddress(),
+      result[2].toBigInt(),
+      result[3].toBigInt(),
+      result[4].toBigInt(),
+      result[5].toBigInt(),
+      result[6].toBigInt(),
+      result[7].toBigInt(),
+      result[8].toBoolean(),
+      result[9].toBoolean()
     );
   }
 
-  try_proposalVotes(
+  try_proposals(
     proposalId: BigInt
-  ): ethereum.CallResult<PeerGovernor__proposalVotesResult> {
+  ): ethereum.CallResult<PeerGovernor__proposalsResult> {
     let result = super.tryCall(
-      "proposalVotes",
-      "proposalVotes(uint256):(uint256,uint256,uint256)",
+      "proposals",
+      "proposals(uint256):(uint256,address,uint256,uint256,uint256,uint256,uint256,uint256,bool,bool)",
       [ethereum.Value.fromUnsignedBigInt(proposalId)]
     );
     if (result.reverted) {
@@ -1160,10 +1360,17 @@ export class PeerGovernor extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new PeerGovernor__proposalVotesResult(
+      new PeerGovernor__proposalsResult(
         value[0].toBigInt(),
-        value[1].toBigInt(),
-        value[2].toBigInt()
+        value[1].toAddress(),
+        value[2].toBigInt(),
+        value[3].toBigInt(),
+        value[4].toBigInt(),
+        value[5].toBigInt(),
+        value[6].toBigInt(),
+        value[7].toBigInt(),
+        value[8].toBoolean(),
+        value[9].toBoolean()
       )
     );
   }
@@ -1202,6 +1409,96 @@ export class PeerGovernor extends ethereum.SmartContract {
         ethereum.Value.fromUnsignedBigIntArray(values),
         ethereum.Value.fromBytesArray(calldatas),
         ethereum.Value.fromString(description)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  propose1(
+    targets: Array<Address>,
+    values: Array<BigInt>,
+    signatures: Array<string>,
+    calldatas: Array<Bytes>,
+    description: string
+  ): BigInt {
+    let result = super.call(
+      "propose",
+      "propose(address[],uint256[],string[],bytes[],string):(uint256)",
+      [
+        ethereum.Value.fromAddressArray(targets),
+        ethereum.Value.fromUnsignedBigIntArray(values),
+        ethereum.Value.fromStringArray(signatures),
+        ethereum.Value.fromBytesArray(calldatas),
+        ethereum.Value.fromString(description)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_propose1(
+    targets: Array<Address>,
+    values: Array<BigInt>,
+    signatures: Array<string>,
+    calldatas: Array<Bytes>,
+    description: string
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "propose",
+      "propose(address[],uint256[],string[],bytes[],string):(uint256)",
+      [
+        ethereum.Value.fromAddressArray(targets),
+        ethereum.Value.fromUnsignedBigIntArray(values),
+        ethereum.Value.fromStringArray(signatures),
+        ethereum.Value.fromBytesArray(calldatas),
+        ethereum.Value.fromString(description)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  queue(
+    targets: Array<Address>,
+    values: Array<BigInt>,
+    calldatas: Array<Bytes>,
+    descriptionHash: Bytes
+  ): BigInt {
+    let result = super.call(
+      "queue",
+      "queue(address[],uint256[],bytes[],bytes32):(uint256)",
+      [
+        ethereum.Value.fromAddressArray(targets),
+        ethereum.Value.fromUnsignedBigIntArray(values),
+        ethereum.Value.fromBytesArray(calldatas),
+        ethereum.Value.fromFixedBytes(descriptionHash)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_queue(
+    targets: Array<Address>,
+    values: Array<BigInt>,
+    calldatas: Array<Bytes>,
+    descriptionHash: Bytes
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "queue",
+      "queue(address[],uint256[],bytes[],bytes32):(uint256)",
+      [
+        ethereum.Value.fromAddressArray(targets),
+        ethereum.Value.fromUnsignedBigIntArray(values),
+        ethereum.Value.fromBytesArray(calldatas),
+        ethereum.Value.fromFixedBytes(descriptionHash)
       ]
     );
     if (result.reverted) {
@@ -1299,6 +1596,21 @@ export class PeerGovernor extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  quorumVotes(): BigInt {
+    let result = super.call("quorumVotes", "quorumVotes():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_quorumVotes(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("quorumVotes", "quorumVotes():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   state(proposalId: BigInt): i32 {
     let result = super.call("state", "state(uint256):(uint8)", [
       ethereum.Value.fromUnsignedBigInt(proposalId)
@@ -1339,6 +1651,21 @@ export class PeerGovernor extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  timelock(): Address {
+    let result = super.call("timelock", "timelock():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_timelock(): ethereum.CallResult<Address> {
+    let result = super.tryCall("timelock", "timelock():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   token(): Address {
@@ -1423,16 +1750,8 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get initialVotingDelay(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get initialVotingPeriod(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get initialProposalThreshold(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+  get _timelock(): Address {
+    return this._call.inputValues[1].value.toAddress();
   }
 }
 
@@ -1461,6 +1780,36 @@ export class CancelCall__Inputs {
     this._call = call;
   }
 
+  get proposalId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class CancelCall__Outputs {
+  _call: CancelCall;
+
+  constructor(call: CancelCall) {
+    this._call = call;
+  }
+}
+
+export class Cancel1Call extends ethereum.Call {
+  get inputs(): Cancel1Call__Inputs {
+    return new Cancel1Call__Inputs(this);
+  }
+
+  get outputs(): Cancel1Call__Outputs {
+    return new Cancel1Call__Outputs(this);
+  }
+}
+
+export class Cancel1Call__Inputs {
+  _call: Cancel1Call;
+
+  constructor(call: Cancel1Call) {
+    this._call = call;
+  }
+
   get targets(): Array<Address> {
     return this._call.inputValues[0].value.toAddressArray();
   }
@@ -1478,10 +1827,10 @@ export class CancelCall__Inputs {
   }
 }
 
-export class CancelCall__Outputs {
-  _call: CancelCall;
+export class Cancel1Call__Outputs {
+  _call: Cancel1Call;
 
-  constructor(call: CancelCall) {
+  constructor(call: Cancel1Call) {
     this._call = call;
   }
 
@@ -1770,6 +2119,36 @@ export class ExecuteCall__Outputs {
   }
 }
 
+export class Execute1Call extends ethereum.Call {
+  get inputs(): Execute1Call__Inputs {
+    return new Execute1Call__Inputs(this);
+  }
+
+  get outputs(): Execute1Call__Outputs {
+    return new Execute1Call__Outputs(this);
+  }
+}
+
+export class Execute1Call__Inputs {
+  _call: Execute1Call;
+
+  constructor(call: Execute1Call) {
+    this._call = call;
+  }
+
+  get proposalId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class Execute1Call__Outputs {
+  _call: Execute1Call;
+
+  constructor(call: Execute1Call) {
+    this._call = call;
+  }
+}
+
 export class OnERC1155BatchReceivedCall extends ethereum.Call {
   get inputs(): OnERC1155BatchReceivedCall__Inputs {
     return new OnERC1155BatchReceivedCall__Inputs(this);
@@ -1962,6 +2341,132 @@ export class ProposeCall__Outputs {
   }
 }
 
+export class Propose1Call extends ethereum.Call {
+  get inputs(): Propose1Call__Inputs {
+    return new Propose1Call__Inputs(this);
+  }
+
+  get outputs(): Propose1Call__Outputs {
+    return new Propose1Call__Outputs(this);
+  }
+}
+
+export class Propose1Call__Inputs {
+  _call: Propose1Call;
+
+  constructor(call: Propose1Call) {
+    this._call = call;
+  }
+
+  get targets(): Array<Address> {
+    return this._call.inputValues[0].value.toAddressArray();
+  }
+
+  get values(): Array<BigInt> {
+    return this._call.inputValues[1].value.toBigIntArray();
+  }
+
+  get signatures(): Array<string> {
+    return this._call.inputValues[2].value.toStringArray();
+  }
+
+  get calldatas(): Array<Bytes> {
+    return this._call.inputValues[3].value.toBytesArray();
+  }
+
+  get description(): string {
+    return this._call.inputValues[4].value.toString();
+  }
+}
+
+export class Propose1Call__Outputs {
+  _call: Propose1Call;
+
+  constructor(call: Propose1Call) {
+    this._call = call;
+  }
+
+  get value0(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
+  }
+}
+
+export class QueueCall extends ethereum.Call {
+  get inputs(): QueueCall__Inputs {
+    return new QueueCall__Inputs(this);
+  }
+
+  get outputs(): QueueCall__Outputs {
+    return new QueueCall__Outputs(this);
+  }
+}
+
+export class QueueCall__Inputs {
+  _call: QueueCall;
+
+  constructor(call: QueueCall) {
+    this._call = call;
+  }
+
+  get targets(): Array<Address> {
+    return this._call.inputValues[0].value.toAddressArray();
+  }
+
+  get values(): Array<BigInt> {
+    return this._call.inputValues[1].value.toBigIntArray();
+  }
+
+  get calldatas(): Array<Bytes> {
+    return this._call.inputValues[2].value.toBytesArray();
+  }
+
+  get descriptionHash(): Bytes {
+    return this._call.inputValues[3].value.toBytes();
+  }
+}
+
+export class QueueCall__Outputs {
+  _call: QueueCall;
+
+  constructor(call: QueueCall) {
+    this._call = call;
+  }
+
+  get value0(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
+  }
+}
+
+export class Queue1Call extends ethereum.Call {
+  get inputs(): Queue1Call__Inputs {
+    return new Queue1Call__Inputs(this);
+  }
+
+  get outputs(): Queue1Call__Outputs {
+    return new Queue1Call__Outputs(this);
+  }
+}
+
+export class Queue1Call__Inputs {
+  _call: Queue1Call;
+
+  constructor(call: Queue1Call) {
+    this._call = call;
+  }
+
+  get proposalId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class Queue1Call__Outputs {
+  _call: Queue1Call;
+
+  constructor(call: Queue1Call) {
+    this._call = call;
+  }
+}
+
 export class RelayCall extends ethereum.Call {
   get inputs(): RelayCall__Inputs {
     return new RelayCall__Inputs(this);
@@ -2000,96 +2505,6 @@ export class RelayCall__Outputs {
   }
 }
 
-export class SetProposalThresholdCall extends ethereum.Call {
-  get inputs(): SetProposalThresholdCall__Inputs {
-    return new SetProposalThresholdCall__Inputs(this);
-  }
-
-  get outputs(): SetProposalThresholdCall__Outputs {
-    return new SetProposalThresholdCall__Outputs(this);
-  }
-}
-
-export class SetProposalThresholdCall__Inputs {
-  _call: SetProposalThresholdCall;
-
-  constructor(call: SetProposalThresholdCall) {
-    this._call = call;
-  }
-
-  get newProposalThreshold(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class SetProposalThresholdCall__Outputs {
-  _call: SetProposalThresholdCall;
-
-  constructor(call: SetProposalThresholdCall) {
-    this._call = call;
-  }
-}
-
-export class SetVotingDelayCall extends ethereum.Call {
-  get inputs(): SetVotingDelayCall__Inputs {
-    return new SetVotingDelayCall__Inputs(this);
-  }
-
-  get outputs(): SetVotingDelayCall__Outputs {
-    return new SetVotingDelayCall__Outputs(this);
-  }
-}
-
-export class SetVotingDelayCall__Inputs {
-  _call: SetVotingDelayCall;
-
-  constructor(call: SetVotingDelayCall) {
-    this._call = call;
-  }
-
-  get newVotingDelay(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class SetVotingDelayCall__Outputs {
-  _call: SetVotingDelayCall;
-
-  constructor(call: SetVotingDelayCall) {
-    this._call = call;
-  }
-}
-
-export class SetVotingPeriodCall extends ethereum.Call {
-  get inputs(): SetVotingPeriodCall__Inputs {
-    return new SetVotingPeriodCall__Inputs(this);
-  }
-
-  get outputs(): SetVotingPeriodCall__Outputs {
-    return new SetVotingPeriodCall__Outputs(this);
-  }
-}
-
-export class SetVotingPeriodCall__Inputs {
-  _call: SetVotingPeriodCall;
-
-  constructor(call: SetVotingPeriodCall) {
-    this._call = call;
-  }
-
-  get newVotingPeriod(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class SetVotingPeriodCall__Outputs {
-  _call: SetVotingPeriodCall;
-
-  constructor(call: SetVotingPeriodCall) {
-    this._call = call;
-  }
-}
-
 export class UpdateQuorumNumeratorCall extends ethereum.Call {
   get inputs(): UpdateQuorumNumeratorCall__Inputs {
     return new UpdateQuorumNumeratorCall__Inputs(this);
@@ -2116,6 +2531,36 @@ export class UpdateQuorumNumeratorCall__Outputs {
   _call: UpdateQuorumNumeratorCall;
 
   constructor(call: UpdateQuorumNumeratorCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateTimelockCall extends ethereum.Call {
+  get inputs(): UpdateTimelockCall__Inputs {
+    return new UpdateTimelockCall__Inputs(this);
+  }
+
+  get outputs(): UpdateTimelockCall__Outputs {
+    return new UpdateTimelockCall__Outputs(this);
+  }
+}
+
+export class UpdateTimelockCall__Inputs {
+  _call: UpdateTimelockCall;
+
+  constructor(call: UpdateTimelockCall) {
+    this._call = call;
+  }
+
+  get newTimelock(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class UpdateTimelockCall__Outputs {
+  _call: UpdateTimelockCall;
+
+  constructor(call: UpdateTimelockCall) {
     this._call = call;
   }
 }

@@ -1531,6 +1531,12 @@ export declare function getBuiltGraphSDK<TGlobalContext = any, TOperationContext
     votes(variables?: Exact<{
         [key: string]: never;
     }>, options?: TOperationContext): Promise<votesQuery>;
+    votesByProposal(variables: Exact<{
+        proposalId: any;
+    }>, options?: TOperationContext): Promise<votesByProposalQuery>;
+    proposalById(variables: Exact<{
+        proposalId: any;
+    }>, options?: TOperationContext): Promise<proposalByIdQuery>;
 };
 export type proposalsQueryVariables = Exact<{
     [key: string]: never;
@@ -1544,15 +1550,35 @@ export type votesQueryVariables = Exact<{
 export type votesQuery = {
     voteCasts: Array<Pick<VoteCast, 'proposalId' | 'transactionHash' | 'id' | 'voter'>>;
 };
+export type votesByProposalQueryVariables = Exact<{
+    proposalId: Scalars['BigInt'];
+}>;
+export type votesByProposalQuery = {
+    voteCasts: Array<Pick<VoteCast, 'proposalId' | 'transactionHash' | 'id' | 'voter' | 'reason' | 'support' | 'weight' | 'blockNumber' | 'blockTimestamp'>>;
+};
+export type proposalByIdQueryVariables = Exact<{
+    proposalId: Scalars['BigInt'];
+}>;
+export type proposalByIdQuery = {
+    proposalCreateds: Array<Pick<ProposalCreated, 'id' | 'description' | 'transactionHash' | 'voteEnd' | 'voteStart' | 'proposer' | 'proposalId'>>;
+};
 export declare const proposalsDocument: DocumentNode<proposalsQuery, Exact<{
     [key: string]: never;
 }>>;
 export declare const votesDocument: DocumentNode<votesQuery, Exact<{
     [key: string]: never;
 }>>;
+export declare const votesByProposalDocument: DocumentNode<votesByProposalQuery, Exact<{
+    proposalId: Scalars['BigInt'];
+}>>;
+export declare const proposalByIdDocument: DocumentNode<proposalByIdQuery, Exact<{
+    proposalId: Scalars['BigInt'];
+}>>;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>;
 export declare function getSdk<C, E>(requester: Requester<C, E>): {
     proposals(variables?: proposalsQueryVariables, options?: C): Promise<proposalsQuery>;
     votes(variables?: votesQueryVariables, options?: C): Promise<votesQuery>;
+    votesByProposal(variables: votesByProposalQueryVariables, options?: C): Promise<votesByProposalQuery>;
+    proposalById(variables: proposalByIdQueryVariables, options?: C): Promise<proposalByIdQuery>;
 };
 export type Sdk = ReturnType<typeof getSdk>;
