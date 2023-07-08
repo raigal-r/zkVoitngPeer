@@ -242,8 +242,6 @@ F
 frontend/tsconfig.json,1/8/18471fb0707c190401cd5328ddb4664160a53d26
 O
 frontend/src/useEthersSigner.ts,b/7/b71ad13a8a919611ec27ff7f5bc23722d58a4dfd
-T
-$frontend/src/pages/landingVoting.tsx,c/f/cf2474b962bd85dc7187e5b5ff81c6bd758330af
 \
 ,smartcontracts/contracts/VotingPaymaster.sol,5/4/54472fa304dd0a54739639598d1194260fe03274
 ]
