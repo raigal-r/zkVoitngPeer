@@ -96,6 +96,8 @@ export type { DoubleEndedQueue } from "./@openzeppelin/contracts/utils/structs/D
 export { DoubleEndedQueue__factory } from "./factories/@openzeppelin/contracts/utils/structs/DoubleEndedQueue__factory";
 export type { PeerGovernor } from "./contracts/PeerGovernor";
 export { PeerGovernor__factory } from "./factories/contracts/PeerGovernor__factory";
+export type { PeerGovernorV2 } from "./contracts/PeerGovernorV2";
+export { PeerGovernorV2__factory } from "./factories/contracts/PeerGovernorV2__factory";
 export type { PeerUSDC } from "./contracts/PeerUSDC";
 export { PeerUSDC__factory } from "./factories/contracts/PeerUSDC__factory";
 export type { PeerVoteToken } from "./contracts/PeerVoteToken";

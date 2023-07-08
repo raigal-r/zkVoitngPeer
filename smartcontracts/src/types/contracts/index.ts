@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { PeerGovernor } from "./PeerGovernor";
+export type { PeerGovernorV2 } from "./PeerGovernorV2";
 export type { PeerUSDC } from "./PeerUSDC";
 export type { PeerVoteToken } from "./PeerVoteToken";
 export type { VotingPaymaster } from "./VotingPaymaster";

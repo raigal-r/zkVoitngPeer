@@ -197,6 +197,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.PeerGovernor__factory>;
     getContractFactory(
+      name: "PeerGovernorV2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PeerGovernorV2__factory>;
+    getContractFactory(
       name: "PeerUSDC",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.PeerUSDC__factory>;
@@ -439,6 +443,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.PeerGovernor>;
+    getContractAt(
+      name: "PeerGovernorV2",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PeerGovernorV2>;
     getContractAt(
       name: "PeerUSDC",
       address: string,

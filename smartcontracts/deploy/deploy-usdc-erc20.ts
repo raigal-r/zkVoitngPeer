@@ -1,7 +1,6 @@
 import { Wallet, Provider } from "zksync-web3";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
-import { PeerVoteToken } from "../src/types";
 
 export default async function (hre: HardhatRuntimeEnvironment) {
   const provider = new Provider("https://testnet.era.zksync.dev");
@@ -11,15 +10,15 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   ).connect(provider);
   const deployer = new Deployer(hre, wallet1);
 
-  const VotingTokenReadArtifact = await hre.artifacts.readArtifact(
-    "PeerVoteToken"
+  const VotingToken = await hre.artifacts.readArtifact("PeerUSDC");
+  const deployVotingTokenArtifact = await deployer.loadArtifact("PeerUSDC");
+  const deployGovernorArtifact = await deployer.loadArtifact("PeerGovernor");
+
+  // deploy contract
+  const votingTokenContract = await deployer.deploy(
+    deployVotingTokenArtifact,
+    []
   );
 
-  const GovernorReadArtifact = await deployer.loadArtifact("PeerGovernorV2");
-  console.log("deploying governor");
-  const governorContract = await deployer.deploy(GovernorReadArtifact, [
-    "0xB8f59AF10d8C66b92d0539C898854040147f8cFf",
-  ]);
-
-  console.log(`// governor contract address ${governorContract.address}`);
+  console.log(`// USDC contract address ${votingTokenContract.address}`);
 }

@@ -3,14 +3,8 @@
 	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 T
 $smartcontracts/deploy/cast-vote-2.ts,9/a/9a34fd050774e1b699fc11a347f36bd8772bcca5
-X
-(smartcontracts/deploy/deploy-governor.ts,1/6/16eea84ef8df89b5d20e8dc860763c2a5021b5ca
-N
-smartcontracts/deploy/erc20.ts,d/4/d4d66d24ea37ecc274582eb5d1e3d87763ca5818
 U
 %smartcontracts/deploy/get-proposal.ts,e/c/ec3b9019a478ff6047f1c9b25a665370774d327e
-R
-"smartcontracts/deploy/cast-vote.ts,3/5/35e437ed94a89de4ef1b59d2d15cde14193df0fc
 x
 Hsmartcontracts/artifacts-zk/contracts/PeerGovernor.sol/PeerGovernor.json,d/1/d1e4909795227a773660d679b5a7dba52098f46f
 C
@@ -33,8 +27,6 @@ M
 sg/peerup/build/subgraph.yaml,c/7/c7b7114493c47dbac3ef458b3cad00ebd7dade48
 D
 sg/peerup/.gitignore,2/e/2e82cc7c1798fc96ec4614228c93b6655464fbfa
-G
-sg/peerup/networks.json,1/1/11be44f2847d446189f764a19feb0b82542817a2
 :
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
@@ -228,8 +220,6 @@ F
 frontend/tsconfig.json,1/8/18471fb0707c190401cd5328ddb4664160a53d26
 O
 frontend/src/useEthersSigner.ts,b/7/b71ad13a8a919611ec27ff7f5bc23722d58a4dfd
-\
-,smartcontracts/contracts/VotingPaymaster.sol,5/4/54472fa304dd0a54739639598d1194260fe03274
 ]
 -frontend/src/types/types/@matterlabs/index.ts,d/7/d7af554308ca38a93315599b2bcaf276df0d1f58
 n
@@ -576,8 +566,6 @@ x
 Hsmartcontracts/src/types/factories/contracts/VotingPaymaster__factory.ts,4/3/43bc82a3365f671b91daa56177195112fbd5b493
 [
 +smartcontracts/src/types/factories/index.ts,a/d/ad31c225687ba67b94b6c90ca46c9a2b718c26a1
-K
-smartcontracts/package.json,d/4/d40c16e0e87ee42ff2ee96fea46cd6adee3ebeec
 ^
 .frontend/src/features/modals/useModalStore.tsx,3/c/3cf2d43cda2bb54188dbddbe7dd1880ad2470ede
 K
