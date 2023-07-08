@@ -7,6 +7,7 @@ import { publicProvider } from "wagmi/providers/public";
 import { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 import { zkSyncTestnet } from "viem/chains";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const { chains, publicClient } = configureChains(
   [zkSync, zkSyncTestnet],
@@ -17,19 +18,24 @@ const { connectors } = getDefaultWallets({
   projectId: "b769195d525fcd74f9ac88723ad1b8c5",
   chains,
 });
+
+const queryClient = new QueryClient();
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
+  queryClient,
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        <Component {...pageProps} />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <QueryClientProvider client={queryClient}>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains}>
+          <Component {...pageProps} />
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </QueryClientProvider>
   );
 };
 
