@@ -1,8 +1,29 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { Layout } from "../features/Layout";
+import { useCreateProposalPaymaster } from "../hooks/useCreateProposal";
+import { BigNumber, ethers } from "ethers";
+import { Address } from "viem";
+import { useState } from "react";
 
 const Landing: NextPage = () => {
+
+
+    const [selectedType, setSelectedType] = useState<String>()
+    const create = (description: string,
+        recipient: Address,
+        amount: number) => {
+        useCreateProposalPaymaster().mutate({
+            description: description,
+            //recipient: "test", // TODO: change to type address
+            recipient: recipient,
+            //amount: 10000 as BigNumber,
+            // correct?
+            amount: ethers.BigNumber.from(amount*10e18),
+        })
+    }
+
+
     return (
         <>
             <Head>
@@ -32,7 +53,8 @@ const Landing: NextPage = () => {
                                 <label>
                                     Voting options
                                 </label>
-                                <select className="select select-bordered w-full">
+                                
+                                <select className="select select-bordered w-full" onChange={ (e) => setSelectedType(e.target.value)}>
                                     <option disabled>Fundraising</option>
                                     <option selected>Transfer Funds</option>
                                 </select>
