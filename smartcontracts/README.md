@@ -1,3 +1,9 @@
+# Core Contracts
+## PeerGovernor
+It is used from openzepplin governance contracts to create a voting proposals etc..
+## VotingPaymasterWithLimit
+The Paymaster contract responsible for paying transaction fees. It will take the governer's address in its constructor as we will subsidize only transaction linked to that contract. For each proposal we have a mapping to track the amount of fees paid and we use API3 to determine this amount in USDC.
+
 # Turorial
 
 1. `yarn install`  
