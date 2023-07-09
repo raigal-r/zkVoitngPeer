@@ -276,8 +276,6 @@ Efrontend/src/types/types/@openzeppelin/contracts/token/ERC20/ERC20.ts,d/5/d5e0
 `frontend/src/types/types/@matterlabs/zksync-contracts/l2/system-contracts/BootloaderUtilities.ts,8/1/8188cd94fb395ec53eb18d48e0a17931f99e22a3
 ‚
 Rfrontend/src/types/types/@matterlabs/zksync-contracts/l2/system-contracts/index.ts,f/d/fd7418fd150019338ac2e60b72913010a38a48f5
-[
-+smartcontracts/src/types/factories/index.ts,a/d/ad31c225687ba67b94b6c90ca46c9a2b718c26a1
 Š
 Zfrontend/src/types/types/factories/@openzeppelin/contracts/interfaces/IERC5267__factory.ts,6/4/64c03f85d4857bb861cd54b0fb37dcfa928bc5a6
 ~
@@ -544,8 +542,6 @@ gsmartcontracts/src/types/factories/@matterlabs/zksync-contracts/l2/system-contr
 tsmartcontracts/src/types/factories/@matterlabs/zksync-contracts/l2/system-contracts/interfaces/IEthToken__factory.ts,5/1/5137f26d99844915f8076da7ae357cf70a3ff430
 e
 5smartcontracts/src/types/contracts/VotingPaymaster.ts,7/8/780793c960fe2e2d1b781441978a7a57bb93b878
-[
-+frontend/src/types/types/factories/index.ts,0/1/0178949e60d986b255fea86315fc108c9c68140e
 e
 5frontend/src/types/types/contracts/VotingPaymaster.ts,6/1/6190cfd71c2f4074dc984a797159c51e354954de
 R
@@ -572,9 +568,5 @@ Hfrontend/src/types/types/factories/@matterlabs/zksync-contracts/index.ts,2/8/2
 .frontend/src/features/modals/useModalStore.tsx,3/c/3cf2d43cda2bb54188dbddbe7dd1880ad2470ede
 X
 (frontend/src/hooks/useEthersProvider.tsx,8/f/8f02ab85b891986e22131f8b58ea89c4a43381b5
-G
-frontend/pnpm-lock.yaml,9/5/951cc066c890821d35c1d0ac0b9a13c88f614d10
-K
-frontend/src/pages/_app.tsx,1/f/1fe65275e04b70c414e8060a1d2b3db4c1af0570
 W
 'frontend/src/hooks/useZkSyncAccount.tsx,9/f/9fd4310fabc22f2897a1c263c4b7066f1031296a

@@ -12,6 +12,8 @@
     "graph:serve": "graphclient serve-dev"
   },
   "dependencies": {
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/providers": "^5.7.2",
     "@graphql-mesh/utils": "^0.94.3",
     "@heroicons/react": "^2.0.18",
     "@rainbow-me/rainbowkit": "^1.0.5",

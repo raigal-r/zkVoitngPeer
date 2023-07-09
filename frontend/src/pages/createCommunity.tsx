@@ -22,14 +22,17 @@ export const CreateCommunity: NextPage = () => {
   });
 
   const createCommunityHandler = useMutation({
-    mutationFn: async (variables: {}) => {
+    mutationFn: async () => {
       const result = await pinJSONtoPinata(communityData);
       console.log(result);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const event = await tx.wait();
       console.log("event", event);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       console.log("event.events[0]?.args", event.events[0]?.args[0]);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return event.events[0]?.args[0];
     },
@@ -45,14 +48,18 @@ export const CreateCommunity: NextPage = () => {
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     updateCommunityData((draft) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       draft[name] = value;
     });
   };
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     await createCommunityHandler.mutateAsync(communityData);
   };
 

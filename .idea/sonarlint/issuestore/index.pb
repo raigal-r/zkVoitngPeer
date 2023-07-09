@@ -462,8 +462,6 @@ i
 9frontend/src/types/types/factories/@openzeppelin/index.ts,7/2/7226c94ff2a7b0e2ba7632ea754dc7ec11aa6bee
 x
 Hfrontend/src/types/types/factories/contracts/VotingPaymaster__factory.ts,b/0/b02105e40771c30281ca1d1854e5e7480ea0e837
-[
-+frontend/src/types/types/factories/index.ts,0/1/0178949e60d986b255fea86315fc108c9c68140e
 ]
 -smartcontracts/src/types/@matterlabs/index.ts,8/b/8bf7626c8aa70e1df87b2a9bc72d001e3a384de2
 n
@@ -564,14 +562,8 @@ usmartcontracts/src/types/factories/@matterlabs/zksync-contracts/l2/system-contr
 osmartcontracts/src/types/factories/@matterlabs/zksync-contracts/l2/system-contracts/openzeppelin/token/index.ts,d/a/dac8f146ab0b567e0a3122ee609e2b568939814d
 x
 Hsmartcontracts/src/types/factories/contracts/VotingPaymaster__factory.ts,4/3/43bc82a3365f671b91daa56177195112fbd5b493
-[
-+smartcontracts/src/types/factories/index.ts,a/d/ad31c225687ba67b94b6c90ca46c9a2b718c26a1
 ^
 .frontend/src/features/modals/useModalStore.tsx,3/c/3cf2d43cda2bb54188dbddbe7dd1880ad2470ede
-K
-frontend/src/pages/_app.tsx,1/f/1fe65275e04b70c414e8060a1d2b3db4c1af0570
-G
-frontend/pnpm-lock.yaml,9/5/951cc066c890821d35c1d0ac0b9a13c88f614d10
 X
 (frontend/src/hooks/useEthersProvider.tsx,8/f/8f02ab85b891986e22131f8b58ea89c4a43381b5
 W

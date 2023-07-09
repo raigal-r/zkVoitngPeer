@@ -31,7 +31,7 @@ const Listing: NextPage = () => {
   });
 
   const createofferHandler = useMutation({
-    mutationFn: async (variables: {}) => {
+    mutationFn: async () => {
       const result = await pinJSONtoPinata(offerData);
       console.log("result", result);
       console.log("listing_id", listing_id);
@@ -49,14 +49,18 @@ const Listing: NextPage = () => {
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     updateOfferData((draft) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       draft[name] = value;
     });
   };
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     await createofferHandler.mutateAsync(offerData);
   };
   return (

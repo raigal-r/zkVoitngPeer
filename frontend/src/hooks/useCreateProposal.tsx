@@ -30,6 +30,7 @@ export const useCreateProposal = () => {
       amount: BigNumber;
       erc20Address: Address;
     }) => {
+      if (!signer) throw new Error("No signer");
       const governor = PeerGovernorV2__factory.connect(
         GOVERNOR_ADDRESS,
         signer
@@ -88,6 +89,7 @@ export const useGetProposalState = (props: { proposalId: string }) => {
     queryKey: ["proposalState", props.proposalId],
     enabled: !!props.proposalId,
     queryFn: async () => {
+      if (!signer) throw new Error("No signer");
       const governor = PeerGovernorV2__factory.connect(
         GOVERNOR_ADDRESS,
         signer
@@ -106,6 +108,7 @@ export const useCastVote = () => {
   return useMutation({
     onSettled: () => queryClient.invalidateQueries(),
     mutationFn: async (props: { proposalId: string; vote: number }) => {
+      if (!signer) throw new Error("No signer");
       const governor = PeerGovernorV2__factory.connect(
         GOVERNOR_ADDRESS,
         signer
@@ -123,6 +126,7 @@ export const useCastVotePaymasterWallet = () => {
   return useMutation({
     onSettled: () => queryClient.invalidateQueries(),
     mutationFn: async (props: { proposalId: string; vote: number }) => {
+      if (!signer) throw new Error("No signer");
       const paymasterParams = utils.getPaymasterParams(PAYMASTER_ADDRESS, {
         type: "General",
         innerInput: new Uint8Array(),
@@ -159,6 +163,7 @@ export const useCastVotePaymaster = () => {
   return useMutation({
     onSettled: () => queryClient.invalidateQueries(),
     mutationFn: async (props: { proposalId: string; vote: number }) => {
+      if (!signer) throw new Error("No signer");
       toast.info("Waiting for zkSync transaction to be mined");
       const paymasterParams = utils.getPaymasterParams(PAYMASTER_ADDRESS, {
         type: "General",
