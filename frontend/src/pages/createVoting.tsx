@@ -32,12 +32,13 @@ const Landing: NextPage = () => {
       toast.error("Please enter a description");
     else if (formData.token === "0x...") toast.error("Please enter a token");
     else
-      createProposal.mutate({
+      createProposal.mutateAsync({
         description: formData.description,
         recipient: formData.recipient,
         amount: ethers.utils.parseEther(formData.amount.toString()),
         erc20Address: formData.token,
-      });
+      }).then(() => router.push("/landingVoting"))
+      ;
   };
 
   return (

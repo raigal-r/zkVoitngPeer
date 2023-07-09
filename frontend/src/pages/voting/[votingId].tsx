@@ -42,50 +42,61 @@ const Welcome: NextPage = () => {
             <p className="">
               {proposalData.data?.proposalCreateds[0]?.description}
             </p>
-            <div className="flex flex-col">
-              <p>History:</p>
-              <div className="flex flex-col">
-                {votes.data?.votes?.sort((a, b) => b.blockTimestamp - a.blockTimestamp)
-                  .map((item) => (
-                    <div className="flex flex-col" key={item.transactionHash}>
-                      <p>{item.voter}</p>
-                      <p>{item.support === 0 ? "NO" : "YES"}</p>
-                      <p>{new Date(item.blockTimestamp * 1000).toLocaleString()}</p>
-                    </div>
-                  ))}
+            <div className="flex w-full px-4 py-16">
+              <div className="w-full overflow-x-auto">
+                <table className="table w-full">
+                  <thead className="w-full">
+                    <tr className="w-full">
+                      <th>ID</th>
+                      <th>Voter</th>
+                      <th>Support</th>
+                      <th>Date Time</th>
+                    </tr>
+                  </thead>
+                  <tbody className="w-full">
+                    {votes.data?.votes.sort((a, b) => b.blockTimestamp - a.blockTimestamp).map((item) => (
+                      <tr key={item.id}>
+                        <td>{item.id.slice(0, 6)}</td>
+                        <td>{item.voter.slice(0,6)}</td>
+                        <td>{item.support === 0 ? "NO" : "YES"}</td>
+                        <td>{new Date(item.blockTimestamp * 1000).toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            <div className="flex w-1/3 flex-col">
+              Please vote yes / no below. Voting ends in{" "}
+              {proposalData.data?.proposalCreateds[0]?.voteEnd}
+              <p>
+                Total votes: {Number(votes.data?.yes) + Number(votes.data?.no)}
+              </p>
+              Yes: {votes.data?.yes} No: {votes.data?.no}
+              <div className="flex ">
+                <button
+                  className="mx-15 btn-accent btn"
+                  onClick={() =>
+                    castVote.mutate({
+                      proposalId: votingId as string,
+                      vote: 1, //
+                    })
+                  }
+                >
+                  Yes
+                </button>
+                <button
+                  className="btn-secondary btn py-10"
+                  onClick={() =>
+                    castVote.mutate({
+                      proposalId: votingId as string,
+                      vote: 0, //
+                    })
+                  }
+                >
+                  No
+                </button>
               </div>
             </div>
-          </div>
-          <div className="flex w-1/3 flex-col">
-            Please vote yes / no below. Voting ends in{" "}
-            {proposalData.data?.proposalCreateds[0]?.voteEnd}
-            <p>
-              Total votes: {Number(votes.data?.yes) + Number(votes.data?.no)}
-            </p>
-            Yes: {votes.data?.yes} No: {votes.data?.no}
-            <div className="flex ">
-              <button
-                className="mx-15 btn-accent btn"
-                onClick={() =>
-                  castVote.mutate({
-                    proposalId: votingId as string,
-                    vote: 1, //
-                  })
-                }
-              >
-                Yes
-              </button>
-              <button
-                className="btn-secondary btn py-10"
-                onClick={() =>
-                  castVote.mutate({
-                    proposalId: votingId as string,
-                    vote: 0, //
-                  })
-                }
-              >
-                No
-              </button>
             </div>
           </div>
         </div>
