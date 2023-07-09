@@ -7,8 +7,11 @@ import { Address } from "viem";
 import { useImmer } from "use-immer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 
 const Landing: NextPage = () => {
+  const account = useAccount();
   const [formData, updateFormData] = useImmer<{
     type: "fundraising" | "transfer";
     description: string;
@@ -32,13 +35,14 @@ const Landing: NextPage = () => {
       toast.error("Please enter a description");
     else if (formData.token === "0x...") toast.error("Please enter a token");
     else
-      createProposal.mutateAsync({
-        description: formData.description,
-        recipient: formData.recipient,
-        amount: ethers.utils.parseEther(formData.amount.toString()),
-        erc20Address: formData.token,
-      }).then(() => router.push("/landingVoting"))
-      ;
+      createProposal
+        .mutateAsync({
+          description: formData.description,
+          recipient: formData.recipient,
+          amount: ethers.utils.parseEther(formData.amount.toString()),
+          erc20Address: formData.token,
+        })
+        .then(() => router.push("/landingVoting"));
   };
 
   return (
@@ -51,95 +55,112 @@ const Landing: NextPage = () => {
       <Layout>
         <div className="container flex w-full flex-col px-4 py-16">
           <div className="w-full">
-            <h2 className="pb-6">
-              Please fill out the form below to create a new Proposal for your
-              DAO:
-            </h2>
-            <div className="flex w-full flex-col gap-y-3">
-              <div className="flex w-full flex-col">
-                <label>Description</label>
-                <textarea
-                  onChange={(e) => {
-                    updateFormData((draft) => {
-                      draft.description = e.target.value as any;
-                    });
-                  }}
-                  className="textarea-bordered textarea w-full"
-                  placeholder="Description of the voting proposal"
-                />
-              </div>
-              <div className="flex w-full flex-col">
-                <label>Voting options</label>
+            <ConnectButton />
+            {account.address ? (
+              <div>
+                <h2 className="mt-2 pb-6 text-2xl font-bold">
+                  Please fill out the form below to create a new Proposal for
+                  your DAO:
+                </h2>
+                <div className="flex w-full flex-col gap-y-3">
+                  <div className="flex w-full flex-col">
+                    <label>Description</label>
+                    <textarea
+                      onChange={(e) => {
+                        updateFormData((draft) => {
+                          draft.description = e.target.value as any;
+                        });
+                      }}
+                      className="textarea-bordered textarea w-full"
+                      placeholder="Description of the voting proposal"
+                    />
+                  </div>
+                  <div className="flex w-full flex-col">
+                    <label>Voting options</label>
 
-                <select
-                  className="select-bordered select w-full"
-                  onChange={(e) => {
-                    updateFormData((draft) => {
-                      draft.type = e.target.value as any;
-                    });
-                  }}
-                >
-                  <option disabled>Fundraising</option>
-                  <option>Transfer Funds</option>
-                </select>
+                    <select
+                      className="select-bordered select w-full"
+                      onChange={(e) => {
+                        updateFormData((draft) => {
+                          draft.type = e.target.value as any;
+                        });
+                      }}
+                    >
+                      <option disabled>Fundraising</option>
+                      <option>Transfer Funds</option>
+                    </select>
+                  </div>
+                  {formData?.type === "transfer" && (
+                    <>
+                      <div className="flex w-full flex-col">
+                        <label>Recipient</label>
+                        <input
+                          onChange={(e) => {
+                            updateFormData((draft) => {
+                              draft.recipient = e.target.value as any;
+                            });
+                          }}
+                          className="input-bordered input w-full"
+                          type="text"
+                          placeholder="Recipient"
+                        />
+                      </div>
+                      <div className="flex w-full flex-col">
+                        <label>Token</label>
+                        <input
+                          onChange={(e) => {
+                            updateFormData((draft) => {
+                              draft.token = e.target.value as any;
+                            });
+                          }}
+                          className="input-bordered input w-full"
+                          type="text"
+                          placeholder="Token"
+                        />
+                      </div>
+                      <div className="flex w-full flex-col">
+                        <label>Amount</label>
+                        <input
+                          onChange={(e) => {
+                            updateFormData((draft) => {
+                              draft.amount = ethers.utils.parseEther(
+                                e.target.value as any
+                              );
+                            });
+                          }}
+                          className="input-bordered input w-full"
+                          type="text"
+                          placeholder="Amount"
+                        />
+                      </div>
+                    </>
+                  )}
+                  <div className="flex w-full justify-between">
+                    <button
+                      className={`btn-accent btn ${
+                        createProposal.isLoading ? "loading" : ""
+                      }`}
+                      onClick={onSubmit}
+                    >
+                      Create
+                    </button>
+                    <button
+                      className="btn-secondary btn"
+                      onClick={() => router.push("/landingVoting")}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               </div>
-              {formData?.type === "transfer" && (
-                <>
-                  <div className="flex w-full flex-col">
-                    <label>Recipient</label>
-                    <input
-                      onChange={(e) => {
-                        updateFormData((draft) => {
-                          draft.recipient = e.target.value as any;
-                        });
-                      }}
-                      className="input-bordered input w-full"
-                      type="text"
-                      placeholder="Recipient"
-                    />
-                  </div>
-                  <div className="flex w-full flex-col">
-                    <label>Token</label>
-                    <input
-                      onChange={(e) => {
-                        updateFormData((draft) => {
-                          draft.token = e.target.value as any;
-                        });
-                      }}
-                      className="input-bordered input w-full"
-                      type="text"
-                      placeholder="Token"
-                    />
-                  </div>
-                  <div className="flex w-full flex-col">
-                    <label>Amount</label>
-                    <input
-                      onChange={(e) => {
-                        updateFormData((draft) => {
-                          draft.amount = ethers.utils.parseEther(
-                            e.target.value as any
-                          );
-                        });
-                      }}
-                      className="input-bordered input w-full"
-                      type="text"
-                      placeholder="Amount"
-                    />
-                  </div>
-                </>
-              )}
-              <div className="flex w-full justify-between">
-                <button
-                  className={`btn-accent btn ${
-                    createProposal.isLoading ? "loading" : ""
-                  }`}
-                  onClick={onSubmit}
-                >
-                  Create
-                </button>
-                <button className="btn-secondary btn" onClick={() => router.push("/landingVoting")}>Cancel</button>
+            ) : (
+              <div className="flex w-full justify-center">
+                <h2 className="mt-2 pb-6 text-2xl font-bold">
+                  Please connect your wallet to create a new Proposal for your
+                  DAO:
+                </h2>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </Layout>
