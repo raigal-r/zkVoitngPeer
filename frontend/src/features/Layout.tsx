@@ -66,11 +66,12 @@ const TopNavigation = ({ children }: { children: ReactNode }) => {
           </div>
         </div>
         <div className="navbar-center">
-          <a className="btn-ghost text-xl normal-case">PEER UP</a>
-        </div>
-        <div className="navbar-end">
-          {isConnected ? "150 Score" : "not connected"}
-          <ConnectWallet />
+          <Link
+            href={"/landingVoting"}
+            className="btn-ghost btn text-xl normal-case"
+          >
+            PeerVote
+          </Link>
         </div>
       </div>
       <div className="lg:col-span-9 xl:col-span-9">{children}</div>

@@ -8,6 +8,7 @@ import {
   useGetProposalState,
   useGetVotes,
 } from "src/hooks/useCreateProposal";
+import Link from "next/link";
 
 const Welcome: NextPage = () => {
   const router = useRouter();
@@ -32,14 +33,13 @@ const Welcome: NextPage = () => {
       <Layout>
         <div className="container flex w-full gap-12 px-4 py-16 ">
           <div className="flex w-2/3 flex-col">
-            <h2>
-              Subject: {proposalData.data?.proposalCreateds[0]?.proposer}
-              ID: {votingId}
+            <h2 className={`text-2xl font-bold`}>
+              {proposalData.data?.proposalCreateds[0]?.proposer}
             </h2>
-            <div className="badge-secondary badge">
+            <div className="badge-accent badge-outline badge">
               status: {proposalState.data}
             </div>
-            <p className="">
+            <p className="mt-4 text-base-content">
               {proposalData.data?.proposalCreateds[0]?.description}
             </p>
             <div className="flex w-full px-4 py-16">
@@ -47,56 +47,88 @@ const Welcome: NextPage = () => {
                 <table className="table w-full">
                   <thead className="w-full">
                     <tr className="w-full">
-                      <th>ID</th>
+                      <th>Tx</th>
                       <th>Voter</th>
                       <th>Support</th>
                       <th>Date Time</th>
                     </tr>
                   </thead>
                   <tbody className="w-full">
-                    {votes.data?.votes.sort((a, b) => b.blockTimestamp - a.blockTimestamp).map((item) => (
-                      <tr key={item.id}>
-                        <td>{item.id.slice(0, 6)}</td>
-                        <td>{item.voter.slice(0,6)}</td>
-                        <td>{item.support === 0 ? "NO" : "YES"}</td>
-                        <td>{new Date(item.blockTimestamp * 1000).toLocaleString()}</td>
-                      </tr>
-                    ))}
+                    {votes.data?.votes
+                      .sort((a, b) => b.blockTimestamp - a.blockTimestamp)
+                      .map((item) => (
+                        <tr key={item.id}>
+                          <td>
+                            {" "}
+                            <Link
+                              className="hover:text-accent-hover link-accent link"
+                              href={
+                                "https://zksync2-testnet.zkscan.io/tx/" +
+                                item.transactionHash
+                              }
+                            >
+                              {item.transactionHash?.slice(0, 6) +
+                                "..." +
+                                item.transactionHash?.slice(-4)}
+                            </Link>
+                          </td>
+                          <td>{item.voter.slice(0, 6)}</td>
+                          <td>{item.support === 0 ? "NO" : "YES"}</td>
+                          <td>
+                            {new Date(
+                              item.blockTimestamp * 1000
+                            ).toLocaleString()}
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
-            <div className="flex w-1/3 flex-col">
-              Please vote yes / no below. Voting ends in{" "}
-              {proposalData.data?.proposalCreateds[0]?.voteEnd}
-              <p>
+            </div>
+          </div>
+          <div className="flex w-1/3 flex-col">
+            <h1 className="text-2xl font-bold">Please vote yes / no below</h1>
+            <div className="card mb-4 w-96 bg-base-100 p-4 shadow-xl">
+              <p className="text-sm font-bold">
                 Total votes: {Number(votes.data?.yes) + Number(votes.data?.no)}
               </p>
-              Yes: {votes.data?.yes} No: {votes.data?.no}
-              <div className="flex ">
-                <button
-                  className="mx-15 btn-accent btn"
-                  onClick={() =>
-                    castVote.mutate({
-                      proposalId: votingId as string,
-                      vote: 1, //
-                    })
-                  }
-                >
-                  Yes
-                </button>
-                <button
-                  className="btn-secondary btn py-10"
-                  onClick={() =>
-                    castVote.mutate({
-                      proposalId: votingId as string,
-                      vote: 0, //
-                    })
-                  }
-                >
-                  No
-                </button>
-              </div>
+              <p className="text-sm font-bold">Yes: {votes.data?.yes}</p>
+              <progress
+                className="progress progress-accent w-56"
+                value={votes.data?.yes}
+                max={Number(votes.data?.yes) + Number(votes.data?.no)}
+              ></progress>
+              <p className="text-sm font-bold">No: {votes.data?.no}</p>
+              <progress
+                className="progress progress-accent w-56"
+                value={votes.data?.no}
+                max={Number(votes.data?.yes) + Number(votes.data?.no)}
+              ></progress>
             </div>
+
+            <div className="flex w-full flex-col gap-2">
+              <button
+                className="btn-accent btn w-full"
+                onClick={() =>
+                  castVote.mutate({
+                    proposalId: votingId as string,
+                    vote: 1, //
+                  })
+                }
+              >
+                Yes
+              </button>
+              <button
+                className="btn-secondary btn w-full"
+                onClick={() =>
+                  castVote.mutate({
+                    proposalId: votingId as string,
+                    vote: 0, //
+                  })
+                }
+              >
+                No
+              </button>
             </div>
           </div>
         </div>

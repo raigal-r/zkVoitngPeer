@@ -31,7 +31,7 @@ const LandingVoting: NextPage = () => {
               <table className="table w-full">
                 <thead>
                   <tr>
-                    <th></th>
+                    <th>Tx</th>
                     <th>Description</th>
                     <th>Vote End</th>
                     <th>Vote Start</th>
@@ -42,8 +42,19 @@ const LandingVoting: NextPage = () => {
                 <tbody>
                   {proposals.data?.proposalCreateds.map((item) => (
                     <tr key={item.id}>
-                      <td>{item.id.slice(0, 6)}</td>
-                      <td>{item.description}</td>
+                      <td>
+                        {" "}
+                        <Link
+                          className="link-info link hover:link-hover"
+                          href={
+                            "https://zksync2-testnet.zkscan.io/tx/" +
+                            item.transactionHash
+                          }
+                        >
+                          {item.transactionHash.substring(0, 10) + "..."}
+                        </Link>
+                      </td>
+                      <td>{item.description.substring(0, 50) + "..."}</td>
                       <td>{item.voteEnd}</td>
                       <td>{item.voteStart}</td>
                       <td>
