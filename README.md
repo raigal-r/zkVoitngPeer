@@ -11,5 +11,5 @@ To ensure sustainability, we have set a limit on the sponsored transaction fees.
 ## Timestamp on L2
 We encountered several challenges while implementing our voting system. One significant issue we faced was related to the usage of block.timestamp for defining the start and end of the voting period. Initially, we expected the timestamps to be in the Unix timestamp format, as commonly used on Layer 1 (L1) blockchains.
 
-However, we discovered that the block.timestamp value on our specific blockchain had a different format or representation. This inconsistency caused compatibility issues and resulted in incorrect time calculations for the start and end of the voting period. As a result, the system was unable to accurately determine the voting duration.
+However, the block.timestamp value on ZkSync seems to have a different format or representation. This inconsistency caused compatibility issues and resulted in incorrect time calculations for the start and end of the voting period. As a result, the system was unable to accurately determine the voting duration.
 ## 
