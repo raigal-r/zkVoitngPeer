@@ -1,5 +1,5 @@
 # zkVoitngPeer
-ETH Barcelona Hackathon
+ETH Barcelona Hackathon Project
 
 # Paymaster and API3 on ZkSync
 We have implemented a Paymaster system to cover the transaction fees associated with voting on governance proposals. This approach aims to democratize and incentivize voting by allowing users to vote without having to pay transaction fees. The Paymaster is funded either from the DAO treasury or from another designated address.
